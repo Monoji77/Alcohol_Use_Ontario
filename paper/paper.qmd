@@ -7,7 +7,9 @@ thanks: "Code and data are available at: [https://github.com/Monoji77/Alcohol_Us
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
-format: pdf
+format: 
+  pdf:
+    fig-pos: H
 number-sections: true
 bibliography: references.bib
 ---
@@ -19,6 +21,7 @@ bibliography: references.bib
 
 library(tidyverse)
 library(palmerpenguins)
+library(knitr)
 ```
 
 
@@ -27,7 +30,7 @@ library(palmerpenguins)
 Overview paragraph
 
 Estimand paragraph
-The estimand would be how much time is spent on exercise for each individual. 
+The estimand would be the actual effect of socio-demographic factors, substance abuse, and health factors on how much time is spent on strenuous activities among individuals in Ontario who engage in regular exercise.
 
 Results paragraph
 
@@ -42,15 +45,319 @@ Telegraphing paragraph: The remainder of this paper is structured as follows. @s
 
 # Data {#sec-data}
 
-## Overview of dataset
+## Context of dataset
 
-The dataset chosen is obtained from Canadian Community Health Survey Annual component 2017-2018. Our data [@shelter].... Following @tellingstories, we consider...
+The dataset chosen is obtained from Computing in the Humanities and Social Sciences/CHASS at the university of Toronto [@SDA_CHASS], specifically the Canadian Community Health Survey (CCHS) annual component 2017-2018 which was collected by @StatisticsOfCanada. The goal of the CCHS survey is to collect comprehensive and reliable health-related data on the Canadian population to support health surveillance, research, and program evaluation. It aims to provide timely, accessible, and flexible data for monitoring health trends, studying small populations and rare characteristics, and addressing emerging health issues, ultimately helping improve the health and well-being of Canadians. 
 
-Overview text
+Other datasets explored include sources from World Health Organisation and ParticipACTION. World Health Organisation provides aggregated data informing certain indicators of interest such as obesity levels and alcohol consumption. This can be found in the data section for Canada[@OtherSource1]. Also, ParticipACTION provides key statistics regarding proportion of adult population in canada meeting the national guidelines of 150 minutes of moderate to vigorous exercise, as well as how sedentary canadians are [@OtherSource2]. However, the availability of raw individual level data is absent from these sources. Although the aggregated data gives us a sensing about general Canadian health, we are not able to focus our attention to the Ontario population. The dataset chosen from Canadian Community Health Survey (CCHS) annual component is ideal as it contains individual level data, where we are able to obtain the province the respondents are from. 
 
-## Measurement
-	
-Some paragraphs about how we go from a phenomena in the world to an entry in the dataset.
+## Original Dataset
+
+The dataset provides 113,290 individual response from Canadians all throughout the country. Surveys were conducted to collect health-related data from respondents. The relevant data collected includes...
+
+- Demographics and Identity: 
+Age, gender, marital status, citizenship, Aboriginal identity, visible minority status, immigrant status, language (mother tongue, spoken at home, first official), sexual orientation.
+
+- Health Status and Conditions:
+Chronic diseases, neurological conditions, mental health indicators, perceived physical and mental health, pain, discomfort, activity limitations, and disabilities.
+
+
+- Health Behaviors and Lifestyle:
+Smoking, drinking, cannabis use, physical activity, helmet use, dietary practices (e.g., fruits, vegetables), breastfeeding, and BMI.
+
+- Health Care Access and Utilization:
+Contact with health professionals, access to health services, immunizations (e.g., flu shots), cancer screenings (e.g., mammograms, pap smears), waiting times, and satisfaction with services.
+
+- Socio-Economic Factors: 
+Educational attainment, work activity, household income, living arrangements, presence of children in the household, food insecurity.
+
+- Life Quality and Perceptions:
+Life satisfaction, life stress, sense of belonging, health-adjusted life expectancy.
+
+- Specialized Health Indicators:
+Two-week disability days, quality and ratings of health care services, functional health status.
+
+- Specific Population Measures:
+Aboriginal group, immigrant duration, visible minority, minority health disparities.
+
+- Geographic and Household Data:
+Geographic location, number of persons or households, household demographics.
+
+This dataset is highly suitable in determining both quantitative factors such as  c qualitative factors  
+
+
+## Measurement {#sec-measurement}
+
+Our goal is to explore the actual effect of socio-demographic factors, substance abuse, and health factors on how much time is spent on exercise among individuals in Ontario who engage in regular exercise. The instrument of measurement would be surveys. Through the cross-sectional survey conducted by CCHS, we are able to get the number of hours spent on vigorous exercise per individual, our response variable.
+
+According to the questionnaire, respondents were asked in a phone survey to indicate whether they had engaged in any strenuous activity that lasted at least 10 minutes and made them sweat and breathe a little harder in the past 7 days. Afterwards, they were asked to indicate the total time spent on those activities. To address the concern of recall bias where an individual may not recall the specific timing in engaging with exercise, surveyors sectioned vigorous exercise into commuting, sports, work and volunteering. Then within each section, surveyors asked which day (Monday to Sunday) in the past week had they engaged in such exercise that made them sweat and breathe a little harder. By doing so, the activities individuals did during the past week would be anchored on the days of the week. Following this would be for the respondents to indicate the total number of hours they engaged in each
+section of vigorous exercise for the past 7 days.
+
+In addition, the explanatory variables we are interested in were also obtained in the same survey. 
+
+For socio-demographic factors possibly affecting time spent on vigorous exercise, the surveyors asked the respondent for their age (DHH_AGE) from 0 years old to 121 years old), sex (DHH_SEX) being either male or female, personal income obtained from tax forms submitted to the Canada Revenue Agency upon consent from respondent, geographical health region (ADM_Q037) that was provided by respondents when they agreed to the phone survey, and highest educational attainment (EHG2_04) ranging from less than high school diploma to master's degree and above. 
+
+For substance abuse, respondents were asked how frequent they consumed alcoholic drinks in the past 12 months (ALC_Q015), ranging from less than once per month to everyday. Surveyors also asked respondents for usage of drugs including one-time marijuana or hashish in the past 12 months (DRG_Q005 to DRG_Q075), and whether they have smoked hundred cigarettes in the past 12 months (SMK_Q020). The last 2 questions allowed respondents to indicate a simple yes or no flag to express their answer.
+
+For health factors, questions were asked to determine an individual's body mass index ranging from underweight to obese and perceived life/work stress ranging from not at all stressful to extremely stressful. Additionally, surveyors asked respondents if they have mood disorders (E.g. depression, bipolarism, mania), for which respondents replied with a simple yes or no. 
+
+Overall, each entry obtained by respondents assigns quantitative values to each factor and the the response for which we can explore subsequently using linear regression to determine which factors have greater influence in the time spent exercising amongst individuals that are engaged in exercising.
+
+
+## Response variable: Time spent on vigorous exercise in the past 7 days
+
+From the CCHS dataset, we look at paadvmva variable. This variable is continuous with values ranging from 0 to 9902 representing the number of minutes spent on vigorous activity in the past 7 days. For easier readability, the variable will be renamed as time_spent_vigorous_exercise_7d.  As explained in section @sec-measurement, this variable measures the time spent on any activities lasting more than 10 minutes that makes an individual sweat more than they normally would. This would include individuals undertaking laborious employment or volunteering efforts, or it could simply include individuals who do cardio and/or strength training.    
+
+By using this variable, we are assuming that the routine of an individual from the past 7 days is indicative of their general routine beyond the past 7 days. This variable may not account for individuals who only began vigorous sweating routine within the past 7 days and were sedentary before, which may not be helpful if included in subsequent model fitting.
+
+Since we are interested in individuals that are already engaging in strenuous activities, we can filter time_spent_vigorous_exercise_7d to exclude 0. After removing such entries, we obtain the following summary statistics as shown in @tbl-summarised_statistics_time_spent_vigorous_exercise_7d. The median time spent on vigorous activities the past 7 days would be 300 minutes, which averages out to 43 minutes per day. 
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-summarised_statistics_time_spent_vigorous_exercise_7d
+#| tbl-cap: Summarised statistics for time spent on vigorous exercise in the past 7 days
+
+original_data <- read_csv("../data/02-analysis_data/analysis_data.csv") 
+
+data_cleaned_1 <- original_data |>
+  filter(time_spent_vigorous_exercise_7d != 0) 
+
+# data_cleaned_1 |>
+#   top_n(10, time_spent_vigorous_exercise_7d) |>
+#   select(time_spent_vigorous_exercise_7d) |>
+#   arrange(desc(time_spent_vigorous_exercise_7d))
+
+kable(data_cleaned_1 |>
+  summarise(`Min.` = min(time_spent_vigorous_exercise_7d),
+            `1st Qu.` = quantile(time_spent_vigorous_exercise_7d, 0.25),
+            Median = median(time_spent_vigorous_exercise_7d),
+            `3rd Qu.` = quantile(time_spent_vigorous_exercise_7d, 0.75),
+            `Max.` = max(time_spent_vigorous_exercise_7d)))
+
+###############
+# function: obtain outlier observations 
+#
+#
+###############
+
+# first_quartile <- quantile(data_cleaned_1$time_spent_vigorous_exercise_7d, 0.25)
+# third_quartile <- quantile(data_cleaned_1$time_spent_vigorous_exercise_7d, 0.75)
+# IQR <- third_quartile - first_quartile
+# outlier_observation <- data_cleaned_1 |>
+#   filter(time_spent_vigorous_exercise_7d < (first_quartile - 1.5*IQR) | 
+#            time_spent_vigorous_exercise_7d > (third_quartile + 1.5*IQR))
+# nrow(outlier_observation)
+# round(nrow(outlier_observation)/nrow(data_cleaned_1) * 100,0)
+```
+
+Interestingly, the maximum time spent on vigorous activities the past 7 days was 9902 minutes, and this averages to 1415 minutes per day, which is equivalent to 23.5 hours in a day. This is very unlikely as this suggests that an individual is constantly engaging in physical strenuous activity without sleeping. Logically, this suggests the possibility of outlier values. By observing @fig-boxplot_time_spent_vigorous_exercise_7d, there are many outlier observations for this variable. Roughly 10% of the observed data are considered outliers as they fall outside 1.5 times the interquartile range from the 25% and 75% quartile values. We would be performing log transformation which would be discussed in section (INSERT SECTION HERE PLEASE DONT FORGET) which would address these outlier values.  
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-boxplot_time_spent_vigorous_exercise_7d
+#| fig-cap: Boxplot of time spent on vigorous exercise in the past 7 days
+#boxplot(data_cleaned_1$time_spent_vigorous_exercise_7d, outcol='indianred4')
+ggplot(data_cleaned_1) +
+  geom_boxplot(aes(y=time_spent_vigorous_exercise_7d), 
+               outlier.color = 'indianred4', 
+               outlier.alpha=0.2) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  ylab('') +
+  xlab('Boxplot of time spent on vigorous exercise in the past 7 days')
+```
+
+Subsequently, we would have to remove observations that are very unlikely as they do not represent the general population and could skew the distribution of time spent on vigorous exercise.
+
+By observing the histogram generated in @fig-hist-time_spent_vigorous_exercise_7d, we obtain a severely right skewed response histogram where most observations lie between 0 to 500 minutes. For the building of linear models in subsequent sections of the paper, this would not be ideal as linear regression assumes a normal distribution of the response variable, suggesting that a transformation would be required to fit a linear regression model.
+
+```{r response variable exploration}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-hist-time_spent_vigorous_exercise_7d
+#| fig-cap: Histogram of time spent on vigorous exercise the past 7 days
+
+hist(data_cleaned_1$time_spent_vigorous_exercise_7d,
+     main='',
+     xlab = 'time spent on vigorous exercise the past 7 days / min',
+     ylab = 'no. of individuals',
+     freq=TRUE, cex.main=1, las = 1
+    )
+```
+## Interested explanatory variables
+
+There are a total of 13 predictors of interest that is seemingly related to the time spent in vigorous exercise an exercising individual gets.  
+
+### Explanatory Variable 1: Age
+This is a variable of interest because age is seemingly correlated to The age groups of respondents were obtained and they exist in bins that spans ages 18 years to 74 years old. 
+
+- 3: 18-19 years old
+- 4: 20-24 years old
+- 5: 25-29 years old
+- 6: 30-34 years old
+- 7: 35-39 years old
+- 8: 40-44 years old
+- 9: 45-49 years old
+- 10: 50-54 years old
+- 11: 55-59 years old
+- 12: 60-64 years old
+- 13: 65-69 years old
+- 14: 70-74 years old
+
+From @fig-barplot-age, we can immediately see that most observations fall within age groups 30 to 34 years old (bin 6), and lesser observations fall within age groups 70-74 years old (bin 14).
+```{r age predictor barplot}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot-age
+#| fig-cap: Histogram of time spent on vigorous exercise the past 7 days
+
+# colnames(data_cleaned_1)
+# 
+# unique((data_cleaned_1 |>
+#          arrange(age))$age)
+#   
+highest_freq_age <- data_cleaned_1 |>
+  count(age) |>
+  top_n(1, n) |>
+  pull(age)
+
+lowest_freq_age <- data_cleaned_1 |>
+  count(age) |>
+  top_n(-1, n) |>
+  pull(age)
+
+data_cleaned_1 |>
+  mutate(group_col = case_when(age == highest_freq_age ~ 'indianred4',
+                               age == lowest_freq_age ~ 'skyblue1',
+                               .default = 'darkgrey')) |>
+  ggplot()  +
+  stat_count(aes(x=age, fill = group_col), show.legend=F) +
+  scale_x_continuous(breaks = c(3:14)) +
+  scale_fill_manual(values = c('indianred4' = 'indianred4', 
+                               'skyblue1'= 'skyblue1', 
+                               'darkgrey'='darkgrey')) +
+  theme_minimal() +
+  xlab('Age in years') +
+  ylab('Number of individuals') +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+```
+
+From @tbl-summarised_statistics_age and @fig-boxplot-age, we are able to see that the the median age bin belongs to age group 40-44 years old. We are able to see that there are no outlier values from @fig-boxplot-age, which means that the survey has obtained an acceptable number of respondents across all age bins. 
+```{r age predictor summarised statistics}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-summarised_statistics_age
+#| tbl-cap: Summarised statistics of respondent ages
+kable(data_cleaned_1 |>
+  summarise(`Min.` = min(age),
+            `1st Qu.` = quantile(age, 0.25),
+            Median = median(age),
+            `3rd Qu.` = quantile(age, 0.75),
+            `Max.` = max(age)))
+```
+```{r age predictor boxplot}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-boxplot-age
+#| fig-cap: Boxplot of respondent ages
+
+ggplot(data_cleaned_1) +
+  geom_boxplot(aes(y=age), 
+               outlier.color = 'indianred4', 
+               outlier.alpha=0.2) +
+  theme_minimal() +
+  scale_y_continuous(breaks = c(0:15)) +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  ylab('respondent ages') +
+  xlab('')
+```
+
+### Explanatory Variable 2: Sex
+
+Sex is a possible influential predictor for total time spent on vigorous activity. Historically, men are associated with exercise and involved in more labour intensive roles such as construction which involves heavy lifting. According to @womenExerciseWHO, women are less active than men by 5% since 2000. However, with the advent of female only establishments such as female gyms, and 32% increase in memberships at fitness and health clubs from 2010 to 2019, it would be interesting to see if the sex of an individual still affects the time spent on vigorous activites among physically active individuals.  
+
+According to @fig-barplot-sex, there is roughly an equal proportion of sexes from our dataset, with slightly more males (6082 respondents) than females (5859 respondents). Since this was a health survey conducted over phone call, there is an equal chance of a respondent to be male or female, which is roughly reflected ing @fig-barplot-sex.
+```{r sex predictor barplot}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot-sex
+#| fig-cap: Barplot of sex
+data_cleaned_1 |>
+  mutate(sex = factor(sex, levels = c(0,1), labels =c('Female','Male'))) |>
+  ggplot()  +
+  geom_bar(aes(x=sex, fill=sex), show.legend=F) +
+  scale_fill_manual(values = c('Female' = 'indianred4',
+                               'Male' = 'skyblue1')) +
+  theme_minimal() +
+  xlab('Individual\'s sex') +
+  ylab('Number of individuals') +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+
+### obtain actual count of sex ###
+# data_cleaned_1 |>
+#   count(sex, name='no_of_respondents') |>
+#   mutate(sex = ifelse(sex == 0, 'female', 'male'))
+```
+
+### Explanatory Variable 3: Highest level of education
+
+In 2023, @EducationAndActiveLifestyle has done a study to show that highest educational attainment may be a leading factor for physical activity. Therefore, it would be worth exploring the effects of highest levels of education with the time spent on vigorous activities among the Ontario residents.
+
+According to @tbl-proportion_highest_educational_attainment, respondents who did not graduate secondary school account for only 5% of the population, and respondents who have at least a bachelor's degree account for 72% of the population. According to @fig-barplot_highest_educational_attainment, we are immediately alerted to a class imbalance in our dataset. 
+
+```{r proportion of respondents, group(highest_educational_attainment)}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-proportion_highest_educational_attainment
+#| tbl-cap: Proportion of respondents grouped by highest educational level
+kable(data_cleaned_1 |>
+  count(highest_educational_attainment, name = 'proportion_of_respondents') |>
+  mutate(proportion_of_respondents = paste0(round(proportion_of_respondents/nrow(data_cleaned_1)*100,0),'%'),
+         highest_educational_attainment = case_when(
+           highest_educational_attainment == 1 ~ 'less than sec sch grad',
+           highest_educational_attainment == 2 ~ 'sec sch grad',
+           highest_educational_attainment == 3 ~ 'university degree and above',
+           .default = '')))
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot_highest_educational_attainment
+#| fig-cap: Barplot of highest_educational_attainment
+data_cleaned_1 |>
+  mutate(highest_educational_attainment = factor(highest_educational_attainment, levels = c(1,2,3), labels =c('less than sec sch grad','sec sch grad', 'university degree and above'))) |>
+  ggplot()  +
+  geom_bar(aes(x=highest_educational_attainment, fill=highest_educational_attainment), show.legend=F) +
+  scale_fill_manual(values = c('less than sec sch grad' = 'orange1',
+                               'sec sch grad' = 'indianred4',
+                               'university degree and above' = 'skyblue1')) +
+  theme_minimal() +
+  xlab('Highest educational attainment') +
+  ylab('Number of individuals') +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+
+```
+
 
 ## Outcome variables
 

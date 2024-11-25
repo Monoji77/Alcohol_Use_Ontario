@@ -11,7 +11,7 @@
 library(tidyverse)
 
 #### Download data ####
-raw_data <- read_csv("../data/01-raw_data/raw_data.csv", na='.')
+raw_data <- read_csv("data/01-raw_data/raw_data.csv", na='.')
 
 #### Clean data ####
 
@@ -22,7 +22,7 @@ data_intermediate_1 <- raw_data |>
   # rename variables for easier interprebility and variable handling
   rename(
     # response
-    time_spent_vigorous_exercise = paadvmva,
+    time_spent_vigorous_exercise_7d = paadvmva,
     
     # potential predictors
     num_alc_drank_12m  = alc_015,
@@ -60,7 +60,7 @@ data_intermediate_1 <- raw_data |>
 # NA-inclusive columns:
 #   num_alc_drank_12m; has_mood_disorders; illicit_drug_use; highest_educational_attainment; 
 #   perceived_life_stress; perceived_work_stress; bmi_class; personal_income; 
-#   time_spent_vigorous_exercise; smoked_hundred_cigarettes;
+#   time_spent_vigorous_exercise_7d; smoked_hundred_cigarettes;
 #
 # NOTE: refer to chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://sda-artsci-utoronto-ca.myaccess.library.utoronto.ca/legacy_sda/dli2/cchs/cchs2017/more_doc/CCHS%202017-2018%20PUMF%20Data%20Dictionary.pdf
 #       for documentation of codes for each variable.
@@ -129,9 +129,29 @@ paste0(round(final_no_observations/original_no_observations*100,0), '%')
 #
 ##########################
 sum(duplicated(data_intermediate2))
- 
+
+
+##########################
+#  cleaning description: 
+#
+#  note: 
+##########################
+data_intermediate3 <- data_intermediate2 |>
+  mutate(
+    # convert 'no' entries in mood_disorders to 0
+    has_mood_disorders = ifelse(has_mood_disorders == 2, 0, has_mood_disorders),
+    
+    # convert 'female' coded 2 to 0
+    sex = ifelse(sex == 2, 0, sex),
+    
+    # convert 'never used drugs' from 2 to 0
+    illicit_drug_use = ifelse(illicit_drug_use == 2, 0, illicit_drug_use),
+    
+    # convert 'never smoked 100 cigarettes' from 2 to 0
+    smoked_hundred_cigarettes = ifelse(smoked_hundred_cigarettes == 2, 0, smoked_hundred_cigarettes)
+         )
 
 #### Save data ####
 # [...UPDATE THIS...]
 # change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(data_intermediate2, "../data/02-analysis_data/analysis_data.csv")
+write_csv(data_intermediate3, "data/02-analysis_data/analysis_data.csv")

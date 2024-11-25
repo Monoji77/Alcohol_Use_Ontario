@@ -1,11 +1,10 @@
 #### Preamble ####
-# Purpose: Models... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Simple Linear Regression Model
+# Author: Chris Yong Hong Sen 
+# Date: 24 November 2024
+# Contact:luke.yong@mail.utoronto.ca 
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Knowledge about linear regression models, assumptions about sampling distributino
 
 
 #### Workspace setup ####
@@ -13,10 +12,10 @@ library(tidyverse)
 library(fastDummies)
 
 #### Read data ####
-analysis_data <- read_csv("../data/02-analysis_data/analysis_data.csv") |>
-  filter(time_spent_vigorous_exercise != 0)  |>
+analysis_data <- read_csv("data/02-analysis_data/analysis_data.csv") |>
+  filter(time_spent_vigorous_exercise_7d != 0)  |>
   mutate(#health_region = factor(health_region),
-         time_spent_vigorous_exercise = log(time_spent_vigorous_exercise)) |>
+         time_spent_vigorous_exercise_7d = log(time_spent_vigorous_exercise_7d)) |>
   select(-province)
 
 # run this if generated column names are in scientific notation
@@ -24,7 +23,7 @@ analysis_data <- read_csv("../data/02-analysis_data/analysis_data.csv") |>
 analysis_data_w_dummies <- dummy_cols(analysis_data, select_columns='health_region', remove_first_dummy = TRUE) |>
   select(-health_region)
 
-
+colnames(analysis_data)
 ### Initial linear regression model ####
 #
 # predictors: all + interaction terms
@@ -32,11 +31,14 @@ analysis_data_w_dummies <- dummy_cols(analysis_data, select_columns='health_regi
 #    1. age:highest_educational_attainment
 #    2. age:sex
 #    3. sex:personal_income
+colnames(analysis_data_w_dummies)
 
-original_lmmodel <- lm(time_spent_vigorous_exercise ~ . +
-              age:highest_educational_attainment +
-              age:sex +
-              sex:personal_income,
+analysis_data_w_dummies |>
+  count(personal_income)
+original_lmmodel <- lm(time_spent_vigorous_exercise_7d ~ ., #+
+              # age:highest_educational_attainment +
+              # age:sex +
+              # sex:personal_income,
                           # age+ 
                           # highest_educational_attainment+
                           # personal_income+
@@ -57,10 +59,10 @@ plot(original_lmmodel)
 summary(original_lmmodel)
 
 # obtain histogram of response variable (log)
-hist(analysis_data_w_dummies$time_spent_vigorous_exercise)
+hist(analysis_data_w_dummies$time_spent_vigorous_exercise_7d)
 
 predictors <- colnames(analysis_data_w_dummies |>
-  select(-time_spent_vigorous_exercise))
+  select(-time_spent_vigorous_exercise_7d))
 
 p_value_vec <- c()
 for (pred in predictors) {
@@ -69,17 +71,18 @@ for (pred in predictors) {
   # age:highest_educational_attainment +
   #   age:sex +
   # sex:personal_income
-  if (pred == 'age') {
-    reduced_model <- lm(time_spent_vigorous_exercise ~ .+sex:personal_income, data = reduced_data)
-  } else if (pred == 'highest_educational_attainment') {
-    reduced_model <- lm(time_spent_vigorous_exercise ~ . + age:sex + sex:personal_income, data = reduced_data)
-  } else if (pred == 'sex') {
-    reduced_model <- lm(time_spent_vigorous_exercise ~ . + age:highest_educational_attainment, data = reduced_data)
-  } else if (pred == 'personal_income') {
-    reduced_model <- lm(time_spent_vigorous_exercise ~ . + age:highest_educational_attainment + age:sex, data = reduced_data) 
-  } else {
-    reduced_model <- lm(time_spent_vigorous_exercise ~ ., data = reduced_data)
-  }
+  # if (pred == 'age') {
+  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ .+sex:personal_income, data = reduced_data)
+  # } else if (pred == 'highest_educational_attainment') {
+  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ . + age:sex + sex:personal_income, data = reduced_data)
+  # } else if (pred == 'sex') {
+  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ . + age:highest_educational_attainment, data = reduced_data)
+  # } else if (pred == 'personal_income') {
+  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ . + age:highest_educational_attainment + age:sex, data = reduced_data) 
+  # } else {
+  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ ., data = reduced_data)
+  # }
+  reduced_model <- lm(time_spent_vigorous_exercise_7d ~ ., data = reduced_data)
   
   partial_f_test_p_value <- anova(reduced_model, original_lmmodel)$`Pr(>F)`[2]
   p_value_vec <- c(p_value_vec, partial_f_test_p_value)
@@ -90,26 +93,32 @@ p_value_tibble <- tibble(
   p_value = p_value_vec
 )
 
-# based on this, we shouldn't eliminate any features but our complexity is now 
+# based on this, we shouldn't eliminate any features but our complexity is now 14 predictors
 view(p_value_tibble)
 
 # use BIC instead as it penalises complex models while minimising errors
-final_model <- step(original_lmmodel, direction = 'backward', k = log(nrow(analysis_data_w_dummies)))
+final_model <- step(original_lmmodel, direction = 'both', k = log(nrow(analysis_data_w_dummies)))
 
 # reporting BIC value of original and final model
 # difference greater than 10 suggest signicant improvement
 BIC(original_lmmodel)
 BIC(final_model) 
 
+# report confidence intervall
+confint(final_model, level = 0.95)
+
 # note for model goodness of fit:
 # R2 and adjusted R2 might not be reliable 
 summary(final_model)
 
+# ensure no multicollinearity, values should be lower than 10 for each predictor
+library(car)
+vif(final_model)
 
 #### Save model ####
 saveRDS(
   final_model,
-  file = "../models/final_model.rds"
+  file = "models/final_model.rds"
 )
 
 
