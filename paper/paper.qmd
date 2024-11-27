@@ -1,12 +1,12 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Men and past smokers from ontario are potentially more physically active than women and non-smokers"
+subtitle: "Women are engaging in lesser physical activities than men. Furthermore, individuals who smoked before are more likely to engage in exercise. Consumption of stimulant-related drugs could have also increased as well, resulting in increased overall physical activities in Ontario."
 author: 
   - Chris Yong Hong Sen
 thanks: "Code and data are available at: [https://github.com/Monoji77/Alcohol_Use_Ontario](https://github.com/Monoji77/Alcohol_Use_Ontario)."
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This study explores factors influencing physical activity levels in Ontario, focusing on demographic and substance abuse. Our findings reveal that women engage in less physical activity than men, while individuals who have smoked in the past and those consuming stimulant-related drugs are more likely to exercise. Additionally, age, highest educational attainment, and health region also play significant roles in determining physical activity levels. These insights highlight the complex interplay of gender, lifestyle behaviors, and sociodemographic factors, providing valuable information for designing targeted public health interventions to promote physical activity."
 format: 
   pdf:
     fig-pos: H
@@ -104,7 +104,7 @@ For health factors, questions were asked to determine an individual's body mass 
 Overall, each entry obtained by respondents assigns quantitative values to each factor and the the response for which we can explore subsequently using linear regression to determine which factors have greater influence in the time spent exercising amongst individuals that are engaged in exercising.
 
 
-## Response variable: Time spent on vigorous exercise in the past 7 days
+## Response variable: Time spent on vigorous activity in the past 7 days
 
 From the CCHS dataset, we look at paadvmva variable. This variable is continuous with values ranging from 0 to 9902 representing the number of minutes spent on vigorous activity in the past 7 days. For easier readability, the variable will be renamed as time_spent_vigorous_exercise_7d.  As explained in section @sec-measurement, this variable measures the time spent on any activities lasting more than 10 minutes that makes an individual sweat more than they normally would. This would include individuals undertaking laborious employment or volunteering efforts, or it could simply include individuals who do cardio and/or strength training.    
 
@@ -195,7 +195,7 @@ hist(data_cleaned_1$time_spent_vigorous_exercise_7d,
 
 There are a total of 13 predictors of interest that is seemingly related to the time spent in vigorous exercise an exercising individual gets.  
 
-### Explanatory Variable 1: Age
+### Variable 1: Age
 This is a variable of interest because age is seemingly correlated to The age groups of respondents were obtained and they exist in bins that spans ages 18 years to 74 years old. 
 
 - 3: 18-19 years old
@@ -286,7 +286,7 @@ ggplot(data_cleaned_1) +
   xlab('')
 ```
 
-### Explanatory Variable 2: Sex
+### Variable 2: Sex {#sec-sex_exploration}
 
 Sex is a possible influential predictor for total time spent on vigorous activity. Historically, men are associated with exercise and involved in more labour intensive roles such as construction which involves heavy lifting. According to @womenExerciseWHO, women are less active than men by 5% since 2000. However, with the advent of female only establishments such as female gyms, and 32% increase in memberships at fitness and health clubs from 2010 to 2019, it would be interesting to see if the sex of an individual still affects the time spent on vigorous activites among physically active individuals.  
 
@@ -315,11 +315,13 @@ data_cleaned_1 |>
 #   mutate(sex = ifelse(sex == 0, 'female', 'male'))
 ```
 
-### Explanatory Variable 3: Highest level of education
+### Variable 3: Highest level of education
 
 In 2023, @EducationAndActiveLifestyle has done a study to show that highest educational attainment may be a leading factor for physical activity. Therefore, it would be worth exploring the effects of highest levels of education with the time spent on vigorous activities among the Ontario residents.
 
-According to @tbl-proportion_highest_educational_attainment, respondents who did not graduate secondary school account for only 5% of the population, and respondents who have at least a bachelor's degree account for 72% of the population. According to @fig-barplot_highest_educational_attainment, we are immediately alerted to a class imbalance in our dataset. 
+According to @tbl-proportion_highest_educational_attainment, respondents who did not graduate secondary school account for only 5% of the population, and respondents who have at least a bachelor's degree account for 72% of the population. According to @fig-barplot_highest_educational_attainment, there seems to be class imbalance for this variable.
+
+However, as seen from post-secondary institution enrollment data from @statisticaPostSecEnrollment, there has been an increase in total number of Canadians enrolled in post secondary education from 2000 to 2020. Accounting for population changes from 2000 [@statCanadaPopulation2000] to 2022 [@statCanadaPopulation2022], there is still a real increase in the number of real enrollments into post secondary education. Therefore, it is very possible that this is representative of the Ontario's population where majority of the population has at least post secondary education.
 
 ```{r proportion of respondents, group(highest_educational_attainment)}
 #| echo: false
@@ -333,8 +335,17 @@ kable(data_cleaned_1 |>
          highest_educational_attainment = case_when(
            highest_educational_attainment == 1 ~ 'less than sec sch grad',
            highest_educational_attainment == 2 ~ 'sec sch grad',
-           highest_educational_attainment == 3 ~ 'university degree and above',
+           highest_educational_attainment == 3 ~ 'post sec certification and above',
            .default = '')))
+
+# Obtain real increase in enrolment
+# pop_2000 <- 30750000
+# pop_2022 <- 39566248
+# 
+# rate_of_enrolment_population_2000 <- 1.44*1000000/pop_2000
+# rate_of_enrolment_population_2020 <- 2.19*1000000/pop_2022 
+# 
+# c(rate_of_enrolment_population_2000, rate_of_enrolment_population_2020)
 ```
 
 ```{r}
@@ -358,86 +369,388 @@ data_cleaned_1 |>
 
 ```
 
+### Variable 4: Health Region
 
-## Outcome variables
-
-Add graphs, tables and text. Use sub-sub-headings for each outcome variable or update the subheading to be singular.
-
+Health region is a categorical variable which tells us the geographical location an individual belongs to defined by Provincial Ministries of Health. It could be possible that certain health regions have more funding that are projected towards increasing awareness towards having an active lifestyle. Therefore, it is worth exploring the relationship between health region and time spent on vigorous activities.
 
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+There are a total of 34 different health regions in the Ontario province. They are encoded using 5 digits. Kindly refer to the appendix (INSERT APPENDIX HERE PLEASE DONT FORGET) to refer to all the various health regions. @fig-map_health_region shows us the various health regions in Ontario. The blue regions shows us health regions for which lesser respondents belong to while red regions show us health regions for which more respondents belong to.
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+Highest occurring health regions
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
+- 35951: City of Ottawa Health Unit
+- 35953: Peel Regional Health Unit
+- 35960: Simcoe Muskoka District Health Unit
+- 35970: York Regional Health Unit
+- 35995: City of Toronto Health Unit *(highest number of observations)
 
-Talk more about it.
+Lowest occurring health regions
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+- 35931: Elgin-St Thomas Health Unit
+- 35935: Haliburton, Kawartha, Pine Ridge District Health Unit
+- 35940: Chatham-Kent Health Unit
+- 35942: Lambton Health Unit
+- 35956: Porcupine Health Unit *(lowest number of observations)
+
 
 ```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
 #| echo: false
 #| warning: false
 #| message: false
+#| label: fig-map_health_region
+#| fig-cap: Map of top five and bottom five occuring Ontario health 
+library(tmap)
+
+top_5_regions <- data_cleaned_1 |>
+  count(health_region, name = 'count') |>
+  top_n(5, count) |>
+  arrange(health_region) |>
+  pull(health_region) 
+
+bottom_5_regions <- data_cleaned_1 |>
+  count(health_region, name = 'count') |>
+  top_n(-5, count) |>
+  arrange(health_region) |>
+  pull(health_region)
+
+regions_to_keep <- c(top_5_regions, bottom_5_regions)
+
+source("../scripts/08-health_region_map.R")
+
+health_region_map
 ```
 
-Talk way more about it. 
+Overall, @fig-barplot_health_region shows us the actual number of observations belonging to the top five and bottom 5 occurring health regions. We can see that most respondents come from the City of Ontario Health Unit (Health_Region = 35995) and lesser respondents belong to Porcupine Health Unit (Health_Region = 35956).
 
-## Predictor variables
+```{r Health region map}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot_health_region
+#| fig-cap: Barplot of top and bottom five occuring health regions 
 
-Add graphs, tables and text.
+data_cleaned_1 |>
+  # mutate(health_region = case_when(
+  #   !(health_region %in% regions_to_keep) ~ 'other',
+  #   .default = paste0(health_region, ''))) |>
+  filter(health_region %in% regions_to_keep) |>
+  count(health_region, name = 'count') |>
+  mutate(group = ifelse(health_region %in% top_5_regions, 'top 5 health regions', 'bottom 5 health regions')) |>
+  ggplot() +
+  geom_bar(stat='identity', 
+           aes(y = reorder(health_region, count),
+               x = count,
+               fill = group)) +
+  theme_minimal() +
+  scale_fill_manual(values = c('top 5 health regions' = 'indianred4', 
+                               'bottom 5 health regions' = 'skyblue1')) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom',
+        legend.direction = 'vertical',
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank()) +
+  guides(fill = guide_legend(reverse = T)) +
+  ylab('Health Region') +
+  xlab('Number of respondents') 
+```
 
-Use sub-sub-headings for each outcome variable and feel free to combine a few into one if they go together naturally.
+### Variable 5: Personal Income
+
+In the dataset, personal income (INCDGPER) is a categorical variable that places an individuals annual income into a range of income values. Below summarises the encoded number and the corresponding meaning of each encoded number. All income values are measured per year.
+
+- 1: No income or income loss
+- 2: Less than $20,000 
+- 3: \$20,000 to \$39,999
+- 4: \$40,000 to \$59,999
+- 5: \$60,000 to \$79,999
+- 6: \$80,000 or more
+
+According to @fig-barplot_personal_income, most of our respondents (25% of the sample) in Ontario are earning between \$20,000 to \$39,000 as part of their annual personal income. It is also worth mentioning that there are very few respondents who are not earning any income in that year. They account for less than 0.5% of the sample. In the 2018 annual wages report provided by @PersonalIncomeTaxFiling2018, the annual personal income reported from tax filing in Ontario that year was $39,510. Therefore, the sampling population's personal income data is representative of Ontario individuals.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot_personal_income
+#| fig-cap: Barplot of personal income 
+
+max_inc <- data_cleaned_1 |> 
+  count(personal_income) |> 
+  top_n(1, n) |>
+  pull(personal_income)
+
+min_inc <- data_cleaned_1 |> 
+  count(personal_income) |> 
+  top_n(-1, n) |>
+  pull(personal_income)
+
+data_cleaned_1 |>
+  mutate(
+    group_col = case_when(
+      personal_income == max_inc ~ 'max',
+       personal_income == min_inc ~ 'min',
+      .default = 'others'),
+    personal_income = factor(personal_income, 
+                               levels = c(1:6), 
+                               labels = c('No income or income loss',
+                                          'Less than $20,000',
+                                          '$20,000 to $39,999',
+                                          '$40,000 to $59,999',
+                                          '$60,000 to $79,999',
+                                          '$80,000 or more'))) |>
+  ggplot()  +
+  geom_bar(aes(x=personal_income, fill=group_col), show.legend=F) +
+  scale_fill_manual(values = c('max'= 'indianred4',
+                               'min' = 'skyblue1',
+                               'others' = 'grey')) +
+  theme_minimal() +
+  xlab('Annual Personal Income') +
+  ylab('Number of respondents') +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.text.x = element_text(angle=30, 
+                                   hjust=1,
+                                   vjust=1))
+# obtain counts of each income bin
+# data_cleaned_1 |>
+#   count(personal_income) |>
+#   mutate(prop_of_pop = paste0(round(n/nrow(data_cleaned_1)*100, 1), '%'))
+```
 
 
+### Variable 6: Frequency of alcohol consumption
+
+This variable is a categorical variable with an implied order. 
+
+- 1: Less than once a month
+- 2: Once a month
+- 3: two to three times a month
+- 4: once a week
+- 5: two to three times a week
+- 6: four to six times a week
+- 7: every day
+
+From @fig-barplot_frequency_alcohol_consumption, we are able to see that most respondents from this dataset drink about 2-3 times per week (2973 respondents) as seen from the red bar. Also, we are seeing fewer respondents drinking about 4-6 times per week (887 respondents) as seen from the blue bar.
+```{r Alcohol frequency bar graph}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot_frequency_alcohol_consumption
+#| fig-cap: Barplot of frequency of alcohol consumption
+max_alc <- data_cleaned_1 |> 
+  count(num_alc_drank_12m) |> 
+  top_n(1, n) |>
+  pull(num_alc_drank_12m)
+
+min_alc <- data_cleaned_1 |> 
+  count(num_alc_drank_12m) |> 
+  top_n(-1, n) |>
+  pull(num_alc_drank_12m)
+
+data_cleaned_1 |>
+  mutate(
+    group_col = case_when(
+      num_alc_drank_12m == max_alc ~ 'max',
+       num_alc_drank_12m == min_alc ~ 'min',
+      .default = 'others'),
+    num_alc_drank_12m = factor(num_alc_drank_12m, 
+                               levels = c(1:7), 
+                               labels = c('<1 alc per month',
+                                          '1 alc per month',
+                                          '2-3 alc per month',
+                                          '1 alc per week',
+                                          '2-3 alc per week',
+                                          '4-6 alc per week',
+                                          'daily alc'))) |>
+  ggplot()  +
+  geom_bar(aes(x=num_alc_drank_12m, fill=group_col), show.legend=F) +
+  scale_fill_manual(values = c('max'= 'indianred4',
+                               'min' = 'skyblue1',
+                               'others' = 'grey')) +
+  theme_minimal() +
+  xlab('Frequency of alcohol consumption') +
+  ylab('Number of respondents') +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.text.x = element_text(angle=30, 
+                                   hjust=1,
+                                   vjust=1.3))
+```
+
+### Variable 7: Illicit drug use the past 12 months
+
+This is a binary variable which indicates whether an individual has used drugs in the past 12 months prior to the interview. Drugs include marijuana, hashish, cocaine, amphetamines, speed, methamphetamines, crystal meth, ecstasy, hallucinogens, and sniffing glue, gasoline or other solvents. If they have attempted any of these drugs, this variable would be flagged as '1' and '0' otherwise.
+
+It would be interesting to see if drug consumption has an effect on exercising. @PhysicalActivityAndSubstanceAbuse exerts that individuals who are more active tend to have lower substance abuse, suggesting a correlation between these two. Having this variable would be interesting to explore the relationship of an individuals drug usage and their time spent on exercise. 
+
+@fig-barplot_illicit_drug_use shows us the number of respondents who have (or haven't) consumed drugs 12 months prior to their interviews. We can see that majority of respondents have not consumed drugs in the given timeframe. However, from @tbl-illicit_drug_use, we can see that there are still a number of respondents who had consumed drugs in the past 12 months, particularly a fifth of the sampling population. According to @SubstanceUseAndAddiction, they estimate that about 21% of canadians, or 6 million people, will meet the criteria for substance use in their lifetime, and this is inclusive of alcohol and that there is a growing opiod crisis in Ontario. Therefore the obtained sample is somewhat representative of usage of drugs among the Ontario population. 
+```{r Illicit drug use summary table}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-illicit_drug_use
+#| tbl-cap: Summary of illicit drug use the past 12 months
+
+kable(data_cleaned_1 |>
+  count(illicit_drug_use, name = 'num_of_respondents') |>
+  mutate(prop_of_population = paste0(round(num_of_respondents/nrow(data_cleaned_1)*100,0),'%'),
+         illicit_drug_use = ifelse(illicit_drug_use == 0, 
+                                   'never consumed drugs',
+                                   'consumed at least once')))
+```
+
+```{r Illicit drug use barplot}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot_illicit_drug_use
+#| fig-cap: Barplot of illicit drug use the past 12 months
+data_cleaned_1 |>
+  mutate(illicit_drug_use = factor(illicit_drug_use, levels = c(0,1), labels =c('Non-drug user','Drug user'))) |>
+  ggplot()  +
+  geom_bar(aes(x=illicit_drug_use, fill=illicit_drug_use), show.legend=F) +
+  scale_fill_manual(values = c('Non-drug user' = 'indianred4',
+                               'Drug user' = 'skyblue1')) +
+  theme_minimal() +
+  xlab('') +
+  ylab('Number of respondents') +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+```
 
 
+### Variable 8: Cigarette consumption
+
+Respondents were asked whether they had smoked more than 100 cigarettes in their lifetimes. This variable is therefore binary, with '1' representing respondents that meet the critera and '0' otherwise. 
+
+It is well known that excessive smoking has negative health impacts on individuals. A cross sectional study conducted by @SmokingAndPhysicalActiveness found that smokers are less likely to be physically active compared to non-smokers. Hence, it would be interesting to discover if there is an effect of smoking more than 100 cigarettes on the time spent on exercise. 
+
+@fig-barplot-cigarettes shows us that within the sample, the visual difference between the number of respondents who smoked more than 100 cigarettes (blue column) and respondents who smoked lesser than 100 cigarettes are not that big. From @tbl-barplot-cigarettes, 57% of respondents have smoked less than 100 cigarettes while the remaining 43% of respondents smoked more than 100 cigarettes. As the classes in this variable is almost split half,
+
+```{r cigarette barplot}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-barplot-cigarettes
+#| fig-cap: Barplot of total cigarettes smoked in a respondent's lifetime
+
+data_cleaned_1 |>
+  mutate(smoked_hundred_cigarettes = factor(smoked_hundred_cigarettes, levels = c(0,1), labels =c('Less than 100 cigarettes','More than 100 cigarettes'))) |>
+  ggplot()  +
+  geom_bar(aes(x=smoked_hundred_cigarettes, fill=smoked_hundred_cigarettes), show.legend=F) +
+  scale_fill_manual(values = c('Less than 100 cigarettes' = 'indianred4',
+                               'More than 100 cigarettes' = 'skyblue1')) +
+  theme_minimal() +
+  xlab('') +
+  ylab('Number of respondents') +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank())
+```
 
 
+@fig-pyrmaid-cigarettes shows us cigarette consumption by age bins among out sample population. As respondent age increases from the first bin (18 to 19 year old) to the fourth bin (30 to 34 year old), we can see the number of respondents who have smoked more than 100 cigarettes in their lifetime increased from less than 125 respondents to more than 500 respondents (about 3 times more respondents between the two age groups).
+```{r cigarette consumption pyramid figure}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-pyrmaid-cigarettes
+#| tbl-cap: Pyramid of cigarettes consumption in respondent's lifetime by age groups
 
+data_cleaned_1 |>
+      group_by(age) |>
+  count(smoked_hundred_cigarettes, name = 'num_of_respondents') |>
+  mutate(prop_of_population = paste0(round(num_of_respondents/nrow(data_cleaned_1)*100,0),'%'),
+         smoked_hundred_cigarettes = ifelse(smoked_hundred_cigarettes == 0, 
+                                   'Less than 100 cigarettes',
+                                   'More than 100 cigarettes'),
+         dummy = ifelse(smoked_hundred_cigarettes == 'More than 100 cigarettes', num_of_respondents, -num_of_respondents)) |>
+  ggplot() +
+  geom_col(aes(x=age, y=dummy, fill=smoked_hundred_cigarettes)) +
+  scale_x_continuous(breaks = c(3:14), 
+                     labels = c('18 - 19 y/o',
+                                '20 - 24 y/0',
+                                '25 - 29 y/o',
+                                '30 - 34 y/o',
+                                '35 - 39 y/o',
+                                '40 - 44 y/o',
+                                '45 - 49 y/o',
+                                '50 - 54 y/o',
+                                '55 - 59 y/o',
+                                '60 - 64 y/o',
+                                '65 - 69 y/o',
+                                '70 - 74 y/o')) +
+  scale_y_continuous(breaks = seq(-750,750, 250), labels = abs) +
+  scale_fill_manual(values = c('Less than 100 cigarettes' = 'indianred4',
+                           'More than 100 cigarettes' = 'skyblue1')) +
+  xlab('') +
+  ylab('Number of respondents') +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.title = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())
+
+### FOR PERSONAL USE, DELETE LATER
+# colnames(analysis_data_w_dummies)
+# analysis_data |>
+#   select(health_region) |>
+#   distinct() |>
+#   arrange(health_region)
+# length(colnames(analysis_data_w_dummies |>
+#   select(health_region_35927:health_region_35995)))
+# data_cleaned_1 |>
+#   count(smoked_hundred_cigarettes)
+```
 
 # Model
 
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+The goal of our model is to explore which factors affect time spent on physical activities. Therefore a simple exploratory linear regression would be the chosen 
+modelling algorithm to determine it. A full model where our response (time_spent_on_physical_activities) would be fitted on all our interested variables outlined in @sec-data-interestedvariables (INSERT THE SECTION  HERE LATER PLEASE DONT FORGET). Background details and diagnostics are included in [Appendix -@sec-model-details].
 
 ## Model set-up
 
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+Let $k$ be the individual from CCHS dataset. Define $y_k$ as the time spent on physical activities for individual $k$. Then $Age_k$, $Sex_k$, $Educ_k$ and $Alc_k$ represents individual i's age, sex, highest educational attainment, and frequency of alcohol consumption the past 12 months respectively. Also, $Drug_k$ and $Cigar_k$ would be indicator explanatory variables derived from the binary variables in our dataset representing if individual k had consumed drugs in the past 12 months and if he/she has smoked 100 cigars in their lifetime respectively. Finally, $HealthRegion_k=35953$ and $HealthRegion_k=35970$ are also indicator explanatory variables derived from the categorical variable health_region in our dataset, which represents if individual k belongs to Health Region 35953 (Peel Regional Health Unit) and if he/she belongs to Health Region 35970 (York Regional Health Unit). Note that the reference with respect to Health Region would be individuals that are not in both health region 35953 and 35970.
+
+Therefore the final model would be... 
+
+\begin{align*} 
+y_k  &= \beta_0 + \beta_1Age_k + \beta_2Sex_k + \beta_3Educ_k + \beta_4Alc_k +\beta_5I*(Drug_k) + \beta_6I*(Cigar_k) + \\ 
+     & \quad\: \beta_7I*(HealthRegion_k=35953) + \beta_8*I(HealthRegion_k=35970) + \epsilon_k
+\end{align*}
 
 \begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
+y_k|\mu_k, \sigma^2 &\sim \mbox{Normal}(\mu_k, \sigma^2) \tag{1} \\
+\mu_k &= \beta_0 + \beta_1Age_k + \beta_2Sex_k + \beta_3Educ_k + \beta_4Alc_k + \tag{2} \\
+      & \quad\: \beta_5I*(Drug_k) + \beta_6I*(Cigar_k) + \notag \\ 
+      & \quad\: \beta_7I*(HealthRegion_k=35953) + \notag \\
+      & \quad\: \beta_8*I(HealthRegion_k=35970) \notag \\
+\epsilon_k &\sim \mbox{Normal}(0, \sigma^2) \tag{3}  
 \end{align}
 
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+We run the model in R [@citeR] using the `stats` package which is a base library offered by the R Core Team, specifically the `lm()` function to create our simple linear regression. The default parameters of the `lm()` function would be used. 
 
 
 ### Model justification
 
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+Initially, we fitted a full model containing every variable of interest. Since health region is a categorical variable with no implied order, To handle health region, we will be creating dummy variables for each health region, specifically $I*(HealthRegion_k=i)$ for $i \in {health\_region}$, and the reference chosen for health region would be the health_region = 35926 (The District of Algoma HU). We define $Income_k$ to be the the personal income of individual k in our dataset. 
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
+Then, for $8 \leq c \leq 40$ and $i \in {health\_region}$, our original full model was defined as... 
 
+\begin{align*} 
+y_k  &= \beta_0 + \beta_1Age_k + \beta_2Sex_k + \beta_3Educ_k + \beta_4Income_k +\beta_5Alc_k +\beta_6I*(Drug_k) +  \\ 
+     & \quad\: \beta_7I*(Cigar_k) + \beta_cI*(HealthRegion=i) + \epsilon_k
+\end{align*}
+
+We then conducted model reduction using backward feature elimination using Bayesian Information Criterion (BIC) as our scoring metric to obtain the least number of predictors that minimises the residual errors from the reduced model. This model reduction was performed using `stats` package from the @citeR as well. The resulting BIC value was obtained from the `lme4` package [@citationBIC]. 
 
 # Results
+
+The final model with our estimated coefficients are as follows
+
+\begin{align*} 
+y_k  &= 5.84 - 0.03Age_k + 0.23 Sex_k - 0.08Educ_k + 0.04Alc_k + 0.15I*(Drug_k) +  \\ 
+     & \quad\: 0.12I*(Cigar_k) + \beta_cI*(HealthRegion=i) + \epsilon_k
+\end{align*}
 
 Our results are summarized in @tbl-modelresults.
 
@@ -446,38 +759,50 @@ Our results are summarized in @tbl-modelresults.
 #| eval: true
 #| warning: false
 #| message: false
-final_model <-
-  readRDS(file = ("../models/final_model.rds"))
+
 ```
 
 ```{r}
 #| echo: false
 #| eval: true
 #| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| tbl-cap: "Linear model of time spent on physically taxing activities based on explanatory variables"
 #| warning: false
+
+final_model <-
+  readRDS(file = ("../models/final_model.rds"))
 
 modelsummary::modelsummary(
   list(
-    "Final model" = final_model
+    "Time spent on physical activity" = final_model
   )
 )
 ```
 
 
-
+\newpage
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Males are more likely to engage in physical activities {#sec-men_physical_activites}
+For the explanatory variable `sex`, the corresponding coefficient from the fitted linear model is 0.232. This means that if an individual is a male, this increases the time spent on physical activities by 26%. While we were expecting increase in the overall engagement in physical activity among women as explained in @sec-sex_exploration, men are still more likely to engage in physical activities than women. In 2018, Global News Canada reported that 31% of women and 25% of men have insufficient physical activity [@citationMenVsWomenExercise]. Therefore, our linear regression model discovery was not surprising.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+In fact, in a study published in the Journal of American College of Cardiology, they discovered that women who were physically active would experience greater health benefits than men who were also physically active [@citationWomenSurviveBetterExercise]. Therefore, this means that more can be done to address the gender gap in the engagement of physical activities. 
 
-## Second discussion point
+
+## Ontario residents who have smoked before might be more likely to engage in physical activities.
+
+From elementary school, Ontario students are exposed to health education where schools would educate about the harms of smoking. It is well known that smoking has negative effect's on an individual's health. Therefore it is unexpected that the linear regression model showed a positive coefficient for the indicator variable for 'having smoked 100 cigarettes' in an individual's lifetime.
+
+The linear model is telling us that if an individual has smoked 100 cigarettes in their lifetime, they are 13% more likely to spend more time being physically active than an individual who has not smoked more than 100 cigarettes in the same timeframe. While it may seem contradicting to what we believe, there may be merit to this value.
+
+A team from the school of Public Health Sciences at University of Waterloo had explored patterns and trends for tobbaco use in canada. What they found was that 70% of Canadians who had smoked before have quit as of 2020 @citationSmokingPatternsWaterlooUniversity. While smoking may have been affected an individual's physical capabilities, it could have also increased awareness regarding the importance of their health. Since most canadians who had a history of smoking had quit smoking, it is very possible that they have greater health conscious. Coupled with increased government support for programs with the sole purpose of increasing physical activeness in Ontario [@citationGovernmentSupportExercise], it is no longer surprising why individuals who smoked 100 cigarettes in their lifetime are on average 13% more likely to engage in physical activities.
 
 Please don't use these as sub-heading labels - change them to be what your point actually is.
 
 ## Third discussion point
+
+## Possible increase in stimulant use (about drugs)
 
 ## Weaknesses and next steps
 

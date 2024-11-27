@@ -21,9 +21,11 @@ analysis_data <- read_csv("data/02-analysis_data/analysis_data.csv") |>
 # run this if generated column names are in scientific notation
 # options(scipen=0)
 analysis_data_w_dummies <- dummy_cols(analysis_data, select_columns='health_region', remove_first_dummy = TRUE) |>
-  select(-health_region)
+  select(-c(health_region, has_mood_disorders, 
+            perceived_life_stress,
+            perceived_work_stress))
 
-colnames(analysis_data)
+colnames(analysis_data_w_dummies)
 ### Initial linear regression model ####
 #
 # predictors: all + interaction terms
@@ -35,6 +37,7 @@ colnames(analysis_data_w_dummies)
 
 analysis_data_w_dummies |>
   count(personal_income)
+
 original_lmmodel <- lm(time_spent_vigorous_exercise_7d ~ ., #+
               # age:highest_educational_attainment +
               # age:sex +
@@ -58,32 +61,33 @@ plot(original_lmmodel)
 # obtain summary plots 
 summary(original_lmmodel)
 
+
 # obtain histogram of response variable (log)
 hist(analysis_data_w_dummies$time_spent_vigorous_exercise_7d)
 
+
+
+##############################
+# Model scoring metric: F test hypothesis testing
+#
+# rationale: from comparing reduced model by any 1 predictor with 
+#            the full model, we can deduce if the removal of the 
+#            predictor results in difference in regression power
+#            of in the reduced model
+#
+# goal: remove predictors that fail the anova F test, which means 
+#       removing the predictor does not change the power of the 
+#       reduced model. This decreases complexity of linear regression 
+# 
+##############################
 predictors <- colnames(analysis_data_w_dummies |>
   select(-time_spent_vigorous_exercise_7d))
 
 p_value_vec <- c()
 for (pred in predictors) {
+  
   reduced_data <- analysis_data_w_dummies |> select(-all_of(pred)) 
-  
-  # age:highest_educational_attainment +
-  #   age:sex +
-  # sex:personal_income
-  # if (pred == 'age') {
-  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ .+sex:personal_income, data = reduced_data)
-  # } else if (pred == 'highest_educational_attainment') {
-  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ . + age:sex + sex:personal_income, data = reduced_data)
-  # } else if (pred == 'sex') {
-  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ . + age:highest_educational_attainment, data = reduced_data)
-  # } else if (pred == 'personal_income') {
-  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ . + age:highest_educational_attainment + age:sex, data = reduced_data) 
-  # } else {
-  #   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ ., data = reduced_data)
-  # }
   reduced_model <- lm(time_spent_vigorous_exercise_7d ~ ., data = reduced_data)
-  
   partial_f_test_p_value <- anova(reduced_model, original_lmmodel)$`Pr(>F)`[2]
   p_value_vec <- c(p_value_vec, partial_f_test_p_value)
 }
@@ -93,14 +97,53 @@ p_value_tibble <- tibble(
   p_value = p_value_vec
 )
 
-# based on this, we shouldn't eliminate any features but our complexity is now 14 predictors
+# based on this, we eliminate 25 health regions
 view(p_value_tibble)
 
-# use BIC instead as it penalises complex models while minimising errors
-final_model <- step(original_lmmodel, direction = 'both', k = log(nrow(analysis_data_w_dummies)))
 
+predictors_to_remove <- p_value_tibble |>
+  
+  # if p-value is less than or equal to alpha=0.05, this means
+  # there is a 95% chance that the power of reduced model
+  # decreasing is not by chance, and implies that the removed 
+  # predictor is important in explaining our response.
+  filter(p_value > 0.05) |>
+  
+  # obtain predictors that did not meet F testing significance
+  pull(predictors)
+
+# remove unwanted predictors
+analysis_data_final <- analysis_data_w_dummies |> 
+  select(-all_of(predictors_to_remove))
+
+# obtain final model from partial f test
+final_model_f_test <- lm(time_spent_vigorous_exercise_7d ~., data = analysis_data_final)
+
+# report final model from BIC algorithm
+summary(final_model_f_test)
+
+# report confidence intervall
+confint(final_model, level = 0.95)
+
+
+#################################
+# Model scoring: Bayesian Information Criterion (BIC)
+#
+# rationale: we use this to further penalise complex models while 
+#            still minimising errors. 
+#
+# goal: obtain a minimal linear regression model that has the least 
+#       predictors and the most information for our response.
+# 
+##################################
+
+final_model <- step(original_lmmodel, direction = 'backward', k = log(nrow(analysis_data_w_dummies)))
+
+# report final model from BIC algorithm
+summary(final_model)
+final_model
 # reporting BIC value of original and final model
-# difference greater than 10 suggest signicant improvement
+# difference greater than 10 suggest significant improvement
 BIC(original_lmmodel)
 BIC(final_model) 
 

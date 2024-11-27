@@ -1,9 +1,6 @@
-# Starter folder
-
 ## Overview
 
-This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.
-
+Physical activeness and factors affecting it is explored in this repository. 
 
 ## File Structure
 
@@ -19,7 +16,10 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in inputs/llms/usage.txt.
+Aspects of the paper were written with the help of ChatGPT and the entire chat history is available in other/llm_usage.
+- Formatting of mathematical equations in paper/paper.qmd were written with the help of ChatGPT. Refer to other/llms_usage/paper_formatting.txt.
+- Summary of original dataset in paper/paper.qmd were written with the help of ChatGPT. Refer to other/llms_usage/original_dataset_summarising.txt
+- Abstract in paper/paper.qmd was written with the help of ChatGPT. Refer to other/llm_usage/abstract.txt
 
 ## Some checks
 
