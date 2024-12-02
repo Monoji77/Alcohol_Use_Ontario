@@ -9,6 +9,7 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(arrow) # for parquet file saving
 
 #### Download data ####
 raw_data <- read_csv("data/01-raw_data/raw_data.csv", na='.')
@@ -152,6 +153,8 @@ data_intermediate3 <- data_intermediate2 |>
          )
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(data_intermediate3, "data/02-analysis_data/analysis_data.csv")
+# save analysis data as a parquet file
+write_parquet(
+  x=data_intermediate3,
+  sink="data/02-analysis_data/analysis_data.parquet"
+)

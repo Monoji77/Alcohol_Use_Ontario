@@ -10,17 +10,26 @@
 #### Workspace setup ####
 library(tidyverse)
 library(fastDummies)
+library(arrow) # reading parquet file
+
 
 #### Read data ####
-analysis_data <- read_csv("data/02-analysis_data/analysis_data.csv") |>
-  filter(time_spent_vigorous_exercise_7d != 0)  |>
-  mutate(#health_region = factor(health_region),
-         time_spent_vigorous_exercise_7d = log(time_spent_vigorous_exercise_7d)) |>
+analysis_data_not_transformed <- read_parquet("data/02-analysis_data/analysis_data.parquet") |>
+  filter(time_spent_vigorous_exercise_7d != 0) |>
   select(-province)
+
+analysis_data <-  analysis_data_not_transformed |>
+  mutate(#health_region = factor(health_region),
+         time_spent_vigorous_exercise_7d = log(time_spent_vigorous_exercise_7d)) 
 
 # run this if generated column names are in scientific notation
 # options(scipen=0)
 analysis_data_w_dummies <- dummy_cols(analysis_data, select_columns='health_region', remove_first_dummy = TRUE) |>
+  select(-c(health_region, has_mood_disorders, 
+            perceived_life_stress,
+            perceived_work_stress))
+
+analysis_data_not_transformed <- dummy_cols(analysis_data_not_transformed, select_columns='health_region', remove_first_dummy = TRUE) |>
   select(-c(health_region, has_mood_disorders, 
             perceived_life_stress,
             perceived_work_stress))
@@ -52,6 +61,19 @@ original_lmmodel <- lm(time_spent_vigorous_exercise_7d ~ ., #+
                           # num_alc_drank_12m,
               data = analysis_data_w_dummies)
 
+original_lmmodel_not_transformed <- lm(time_spent_vigorous_exercise_7d ~ ., #+
+                       # age:highest_educational_attainment +
+                       # age:sex +
+                       # sex:personal_income,
+                       # age+ 
+                       # highest_educational_attainment+
+                       # personal_income+
+                       # smoked_hundred_cigarettes+
+                       # # perceived_work_stress+
+                       # # illicit_drug_use+
+                       # health_region +
+                       # num_alc_drank_12m,
+                       data = analysis_data_not_transformed)
 # obtain summary plots to check linear regression assumptions
 # 1. normality of sampling distribution
 # 2. homoscedasticity (random variance)
@@ -159,9 +181,20 @@ library(car)
 vif(final_model)
 
 #### Save model ####
+#final_model
 saveRDS(
   final_model,
   file = "models/final_model.rds"
 )
 
+#original model with not transformed y variable
+saveRDS(
+  original_lmmodel_not_transformed,
+  file = "models/original_model_not_transformed.rds"
+)
+
+saveRDS(
+  original_lmmodel,
+  file = "models/original_model.rds"
+)
 
