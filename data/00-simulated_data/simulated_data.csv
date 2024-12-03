@@ -1,152 +1,201 @@
-division,state,party
-Division 1,Victoria,Liberal
-Division 2,New South Wales,Liberal
-Division 3,Tasmania,Liberal
-Division 4,New South Wales,Liberal
-Division 5,Queensland,Liberal
-Division 6,New South Wales,Labor
-Division 7,Victoria,Liberal
-Division 8,Western Australia,Labor
-Division 9,Western Australia,Greens
-Division 10,Queensland,Labor
-Division 11,Queensland,Labor
-Division 12,Northern Territory,Liberal
-Division 13,New South Wales,Labor
-Division 14,Western Australia,Labor
-Division 15,Western Australia,National
-Division 16,Victoria,Liberal
-Division 17,South Australia,Liberal
-Division 18,Victoria,Liberal
-Division 19,Western Australia,Labor
-Division 20,South Australia,Labor
-Division 21,New South Wales,Liberal
-Division 22,Queensland,Greens
-Division 23,New South Wales,Liberal
-Division 24,New South Wales,Liberal
-Division 25,Queensland,Labor
-Division 26,Victoria,National
-Division 27,New South Wales,Liberal
-Division 28,Queensland,Liberal
-Division 29,Tasmania,Liberal
-Division 30,South Australia,Liberal
-Division 31,New South Wales,Liberal
-Division 32,Victoria,Labor
-Division 33,Tasmania,Liberal
-Division 34,New South Wales,Liberal
-Division 35,Western Australia,Labor
-Division 36,New South Wales,Liberal
-Division 37,Tasmania,Greens
-Division 38,Tasmania,Labor
-Division 39,Victoria,Greens
-Division 40,South Australia,Labor
-Division 41,New South Wales,Other
-Division 42,New South Wales,Other
-Division 43,Tasmania,Labor
-Division 44,Tasmania,National
-Division 45,Queensland,Liberal
-Division 46,Australian Capital Territory,Other
-Division 47,Queensland,Labor
-Division 48,Queensland,Other
-Division 49,South Australia,Liberal
-Division 50,Victoria,National
-Division 51,South Australia,Liberal
-Division 52,Victoria,Labor
-Division 53,South Australia,National
-Division 54,Queensland,Liberal
-Division 55,Queensland,Labor
-Division 56,South Australia,Liberal
-Division 57,New South Wales,Other
-Division 58,Northern Territory,Liberal
-Division 59,New South Wales,Labor
-Division 60,Western Australia,Labor
-Division 61,New South Wales,Liberal
-Division 62,South Australia,Liberal
-Division 63,Queensland,Labor
-Division 64,Tasmania,Labor
-Division 65,South Australia,Labor
-Division 66,Victoria,Labor
-Division 67,Queensland,Liberal
-Division 68,Queensland,Liberal
-Division 69,Tasmania,Labor
-Division 70,South Australia,National
-Division 71,Australian Capital Territory,Labor
-Division 72,Western Australia,Labor
-Division 73,Queensland,National
-Division 74,Victoria,Labor
-Division 75,Western Australia,Labor
-Division 76,Tasmania,Labor
-Division 77,Queensland,Liberal
-Division 78,Western Australia,Liberal
-Division 79,Queensland,Labor
-Division 80,Queensland,Liberal
-Division 81,Victoria,Labor
-Division 82,New South Wales,Liberal
-Division 83,Victoria,Liberal
-Division 84,Queensland,National
-Division 85,Western Australia,Liberal
-Division 86,New South Wales,Labor
-Division 87,Queensland,Liberal
-Division 88,New South Wales,Liberal
-Division 89,Tasmania,Liberal
-Division 90,South Australia,Labor
-Division 91,Victoria,Liberal
-Division 92,New South Wales,Labor
-Division 93,Tasmania,Labor
-Division 94,South Australia,Labor
-Division 95,Victoria,Liberal
-Division 96,Victoria,Labor
-Division 97,Western Australia,Liberal
-Division 98,Queensland,Liberal
-Division 99,South Australia,Liberal
-Division 100,New South Wales,Labor
-Division 101,South Australia,Labor
-Division 102,New South Wales,Labor
-Division 103,Victoria,Labor
-Division 104,Victoria,Labor
-Division 105,South Australia,Other
-Division 106,Western Australia,Labor
-Division 107,Tasmania,Liberal
-Division 108,Victoria,Labor
-Division 109,Queensland,Liberal
-Division 110,Victoria,Labor
-Division 111,Australian Capital Territory,Labor
-Division 112,Victoria,Liberal
-Division 113,Victoria,Liberal
-Division 114,Victoria,Liberal
-Division 115,Tasmania,Labor
-Division 116,Victoria,Labor
-Division 117,New South Wales,Labor
-Division 118,Victoria,Labor
-Division 119,Victoria,Greens
-Division 120,Northern Territory,Labor
-Division 121,South Australia,Liberal
-Division 122,New South Wales,Liberal
-Division 123,New South Wales,Labor
-Division 124,New South Wales,Liberal
-Division 125,New South Wales,National
-Division 126,New South Wales,Labor
-Division 127,Queensland,Labor
-Division 128,New South Wales,Other
-Division 129,Queensland,Labor
-Division 130,Australian Capital Territory,Liberal
-Division 131,Tasmania,Greens
-Division 132,New South Wales,National
-Division 133,New South Wales,Labor
-Division 134,Northern Territory,Labor
-Division 135,South Australia,National
-Division 136,Victoria,Labor
-Division 137,Tasmania,National
-Division 138,South Australia,Liberal
-Division 139,New South Wales,Labor
-Division 140,Victoria,Other
-Division 141,Queensland,Greens
-Division 142,Victoria,National
-Division 143,Western Australia,Labor
-Division 144,Victoria,Labor
-Division 145,Queensland,Liberal
-Division 146,Tasmania,Liberal
-Division 147,South Australia,Liberal
-Division 148,Victoria,Labor
-Division 149,New South Wales,National
-Division 150,New South Wales,Labor
-Division 151,Victoria,Liberal
+time_spent_physical_activity_7d,freq_alc_drank,sex,age,personal_income,highest_educational_attainment,health_region,smoking_status,illicit_drug_use
+7176,5,0,12,2,3,5,1,1
+7871,2,0,11,3,3,33,0,0
+4316,1,0,10,4,2,10,0,0
+2448,6,0,5,4,3,24,0,0
+8574,1,1,11,3,1,34,0,0
+5408,5,1,6,3,3,20,0,0
+6802,6,1,13,3,3,32,0,0
+3894,7,0,6,4,3,1,1,0
+2338,5,0,8,2,1,10,1,0
+2518,7,1,7,2,3,6,1,0
+9572,3,0,9,2,3,7,0,0
+3843,1,1,8,2,2,32,0,1
+5259,5,0,7,5,3,12,1,0
+1703,5,0,5,4,2,26,1,0
+9665,7,1,10,2,3,26,0,0
+132,2,1,14,2,3,18,1,0
+8449,6,0,10,4,3,16,0,0
+7032,7,1,11,4,2,8,0,1
+5312,5,0,14,3,2,15,0,0
+8086,3,0,6,2,3,4,0,1
+3181,4,1,4,3,3,2,0,0
+2988,6,1,10,3,2,31,0,0
+5258,5,0,11,4,2,5,1,0
+3290,7,0,3,3,3,28,0,0
+2225,3,0,12,2,2,14,0,0
+8782,4,0,11,3,3,33,0,0
+6360,5,0,6,2,2,27,0,1
+298,1,1,7,3,3,16,0,1
+5377,6,0,5,2,3,4,0,1
+8448,2,0,3,2,3,21,0,0
+7151,7,1,12,5,2,11,1,0
+1901,7,1,8,3,2,16,0,1
+1608,7,0,11,4,3,34,0,0
+6447,3,1,5,4,3,26,0,0
+6749,4,1,3,5,2,10,1,1
+5591,5,1,12,2,3,11,1,0
+4356,7,1,11,2,3,4,0,0
+9086,7,0,10,5,2,6,0,0
+9212,7,0,7,3,2,6,0,0
+9413,4,0,9,3,2,20,0,0
+5760,6,1,13,5,3,12,0,0
+8837,6,1,13,2,3,32,1,0
+4443,4,0,6,3,2,13,0,0
+3556,2,0,5,2,2,23,0,0
+9735,5,1,9,6,2,32,1,0
+873,7,0,13,5,3,30,1,0
+1935,5,1,5,2,2,27,0,0
+9557,3,1,13,5,2,19,0,0
+9576,6,1,6,3,2,18,0,0
+6635,3,1,3,3,2,16,1,0
+250,6,0,12,4,2,23,1,1
+9022,3,1,14,3,3,14,0,0
+1584,2,0,12,2,3,30,0,0
+8674,3,1,11,3,2,1,1,0
+1003,2,0,14,4,2,13,0,0
+5649,3,1,6,5,3,19,1,0
+8674,4,0,7,4,3,10,0,0
+3901,1,0,6,3,3,6,0,0
+8562,6,1,3,2,3,20,0,1
+8740,6,1,12,5,3,26,0,0
+2060,1,0,4,2,2,5,0,1
+8522,2,0,5,5,3,10,0,1
+4192,2,0,7,2,2,27,1,0
+8795,6,1,5,3,2,3,0,0
+7665,3,1,14,2,2,9,1,0
+7047,3,1,8,3,2,25,1,0
+1255,3,1,7,3,3,3,1,0
+903,6,0,5,3,2,29,0,0
+6988,1,0,11,4,2,2,0,1
+4725,1,1,11,2,3,22,0,0
+2631,2,0,11,2,3,2,0,0
+8755,6,1,3,2,3,8,0,0
+7776,1,0,7,2,3,28,0,0
+3267,7,1,13,6,2,29,0,1
+6938,3,0,10,3,3,3,0,1
+6224,1,1,3,3,3,19,0,0
+5948,7,1,4,5,2,33,0,0
+9126,3,1,7,4,2,32,1,0
+9244,3,0,7,2,3,13,0,0
+9966,2,1,7,5,3,25,1,0
+1200,4,0,12,3,3,33,1,0
+2856,7,0,5,3,2,18,0,1
+458,3,1,12,2,2,17,0,0
+3991,4,1,8,2,3,32,0,0
+599,5,1,10,4,3,28,0,0
+1403,1,0,6,2,2,29,1,0
+2910,1,1,11,2,3,13,1,0
+6763,7,0,6,3,2,24,0,0
+9778,4,0,3,5,2,34,0,0
+5481,6,0,4,5,2,27,1,0
+1351,3,1,10,4,2,8,0,0
+368,1,0,8,5,3,33,1,0
+4526,1,0,9,3,3,16,0,1
+2288,5,0,8,3,3,23,0,0
+7886,6,0,6,5,2,5,1,0
+7945,5,0,3,5,2,10,0,0
+5781,3,1,11,4,3,33,0,0
+11,7,0,7,5,3,20,0,0
+621,1,0,11,3,2,19,0,1
+7972,4,0,8,4,1,6,1,0
+7696,5,0,3,4,3,18,1,0
+2602,5,0,3,4,2,25,0,0
+7504,5,0,8,6,2,30,1,0
+5088,2,0,7,5,2,19,1,0
+5053,3,0,4,3,3,19,0,0
+3200,7,0,3,2,2,13,0,0
+6037,7,0,8,5,3,18,0,0
+2391,7,0,14,2,3,2,1,0
+1167,6,1,8,5,3,28,0,0
+943,5,1,13,6,2,23,0,0
+5142,5,1,12,2,2,12,0,0
+8518,6,1,9,2,3,21,0,0
+7691,5,0,14,2,2,22,0,1
+2410,7,1,4,3,2,1,0,0
+3373,4,1,11,4,2,18,0,0
+1178,5,0,6,3,3,25,1,1
+2566,4,1,9,2,2,10,1,0
+7792,2,0,6,4,3,5,0,0
+7384,7,0,3,4,3,32,0,0
+8681,7,0,8,5,2,28,1,0
+1087,2,0,9,2,3,11,0,0
+4860,4,0,10,6,2,16,0,1
+1596,2,1,3,3,3,29,1,0
+3675,5,0,13,2,3,19,0,0
+6855,1,1,12,3,2,20,0,0
+3285,1,1,13,2,2,27,0,0
+2577,6,1,12,3,3,13,0,0
+6324,7,1,5,3,3,11,0,0
+9312,7,1,13,5,3,4,1,0
+4080,7,1,6,5,3,20,0,0
+1764,4,0,13,5,2,16,1,0
+1692,7,1,14,2,2,30,1,0
+1317,1,1,8,3,2,31,0,0
+3586,3,0,6,3,2,26,1,0
+5623,2,1,6,5,2,14,1,0
+4783,4,1,6,2,1,1,0,0
+8021,4,0,9,4,3,24,0,0
+7759,5,1,12,2,3,18,1,0
+402,5,0,9,3,2,10,1,0
+4469,7,1,14,1,2,32,0,1
+519,4,1,6,3,3,15,1,0
+8909,7,0,12,3,2,26,0,0
+6214,2,0,12,4,3,22,1,0
+2239,1,0,6,4,2,26,0,0
+5368,5,0,6,5,3,1,0,0
+8197,6,0,6,2,2,20,1,0
+6080,5,1,13,3,3,27,0,0
+9442,2,0,9,2,3,9,0,0
+10066,7,0,6,5,2,25,1,0
+8083,2,1,8,2,2,20,0,0
+9506,2,1,3,4,3,29,0,0
+394,4,0,6,2,3,6,0,0
+9404,7,0,5,2,2,21,0,0
+1186,5,0,12,2,2,27,0,0
+9029,1,1,10,4,3,2,1,0
+9497,2,1,3,2,3,15,0,0
+1332,6,0,8,3,3,21,0,0
+4729,5,1,5,2,3,15,0,0
+396,1,1,12,3,3,27,1,0
+6440,4,0,3,2,3,18,0,0
+8811,5,1,3,6,2,3,0,1
+1319,6,1,6,3,2,1,0,0
+602,1,1,10,4,3,5,1,0
+1873,7,0,8,3,3,33,0,0
+4319,5,1,6,3,2,24,0,0
+8667,6,0,3,3,2,1,0,0
+10042,5,0,9,2,3,31,0,1
+6679,3,1,7,2,2,30,1,0
+4145,2,1,6,4,2,9,1,0
+8130,3,0,8,4,3,34,0,0
+8344,6,0,9,3,3,8,0,0
+1022,1,0,12,5,2,19,0,0
+3494,1,0,12,3,3,8,0,0
+5214,2,1,13,3,2,15,1,0
+8450,4,1,4,2,3,9,0,1
+2998,1,1,6,1,3,32,0,1
+8467,2,0,11,2,2,27,0,0
+1718,5,1,8,2,2,25,0,0
+8524,2,0,8,3,3,1,0,0
+1401,6,1,11,2,3,9,0,1
+4409,3,1,6,2,3,11,0,0
+4437,4,1,8,5,3,5,0,0
+2184,5,1,11,4,2,30,1,0
+3232,7,1,6,5,2,26,0,0
+3250,3,1,5,5,3,4,0,1
+4227,3,0,7,5,3,33,0,0
+1375,2,0,11,4,3,7,1,0
+4104,7,0,9,2,3,28,0,0
+5106,5,0,7,2,2,23,0,0
+3848,6,1,4,5,2,3,0,0
+8359,2,1,3,2,3,12,1,0
+6848,3,0,4,2,2,32,0,0
+4253,2,1,13,3,2,34,0,0
+4938,1,1,4,3,2,9,1,0
+7279,1,1,3,3,3,4,0,0
+550,1,1,10,5,2,18,1,0
+9361,6,1,5,2,3,11,0,0
+7320,1,1,3,2,3,19,0,1
+97,5,0,12,4,3,33,1,0
+7786,3,1,10,2,3,18,0,0

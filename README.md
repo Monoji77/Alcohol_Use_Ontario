@@ -2,18 +2,20 @@
 
 ## Overview
 
-Physical activeness and factors affecting it is explored in this repository. 
+Physical activeness is a highly researched topic for centuries. This papers examine modern sociodemographic factors such as gender, age, income, as well as health factors like smoking, drinking and drug habits and particularly, how they may explain physical activeness among residents in Ontario. 
 
 ## File Structure
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from X.
--   `data/analysis_data` contains the cleaned dataset that was constructed.
--   `model` contains fitted models. 
--   `other` contains details about LLM chat interactions
+-   `data/simulated_data` contains the simulated dataset of Canadian Community Health Survey (2017-2018) (CCHS).
+-   `data/raw_data` contains the raw data as obtained from University of Toronto for CCHS data.
+-   `data/analysis_data` contains the cleaned dataset which exists as a parquet.
+-   `data/map_data` contains raw shape files obtained from Statistics Canada.
+-   `model` contains fitted linear models. 
+-   `other` contains images related to this project, details about LLM chat interactions and map outputs.
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
--   `scripts` contains the R scripts used to simulate, download and clean data.
+-   `scripts` contains the R scripts used to simulate, download, clean, model and map the clean data, as well as scripts to test for simulated data and cleaned parquet data.
 
 ## Downloading data details
 
@@ -40,3 +42,4 @@ Aspects of the paper were written with the help of ChatGPT and the entire chat h
 - Abstract in paper/paper.qmd was written with the help of ChatGPT. Refer to other/llm_usage/abstract.txt
 - Introduction in paper/paper.qmd was written with the help of ChatGPT. Refer to other/llm_usage/introduction.txt
 - Weaknesses in paper/paper.qmd was written with the help of ChatGPT. Refer to other/llm_usage/weaknesses.txt
+- Survey appendix in paper/paper.qmd was written with the help of ChatGPT. Refer to other/llm_usage/survey.txt 

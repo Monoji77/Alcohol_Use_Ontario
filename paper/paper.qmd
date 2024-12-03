@@ -1,12 +1,12 @@
 ---
-title: "Men and past smokers from ontario are potentially more physically active than women and non-smokers"
+title: "Men and past smokers from ontario are potentially more physically active than women and non-smokers respectively"
 subtitle: "Women are engaging in lesser physical activities than men. Furthermore, individuals who smoked before are more likely to engage in physical activity. Consumption of stimulant-related drugs could have also increased as well, resulting in increased overall physical activities in Ontario."
 author: 
   - Chris Yong Hong Sen
-thanks: "Code and data are available at: [https://github.com/Monoji77/Alcohol_Use_Ontario](https://github.com/Monoji77/Alcohol_Use_Ontario)."
+thanks: "Code and data are available at: [https://github.com/Monoji77/physical_health_ontario](https://github.com/Monoji77/physical_health_ontario)."
 date: today
 date-format: long
-abstract: "This study explores factors influencing physical activity levels in Ontario, focusing on demographic and substance abuse. Our findings reveal that women engage in less physical activity than men, while individuals who have smoked in the past and those consuming stimulant-related drugs are more likely to be physically active. Additionally, age, highest educational attainment, and health region also play significant roles in determining physical activity levels. These insights highlight the complex interplay of gender, lifestyle behaviors, and sociodemographic factors, providing valuable information for designing targeted public health interventions to promote physical activity."
+abstract: "This study explores factors influencing physical activity levels in Ontario, focusing on demographic and substance abuse. Our findings reveal that women engage in less physical activity than men, while individuals who have smoked in the past and those consuming stimulant-related drugs are more likely to be physically active. Additionally, age, highest educational attainment, and health region also play significant roles in determining physical activity levels. These findings highlight the complex interplay of gender, lifestyle behaviors, and sociodemographic factors, providing helpful information for designing targeted public health interventions to promote physical activity."
 format: 
   pdf:
     fig-pos: H
@@ -29,7 +29,7 @@ library(lme4) # reporting BIC values
 
 # Introduction
 
-Physical activity is a cornerstone of public health, yet participation rates remain suboptimal across various populations in Ontario. This is especially concerning as physical inactivity is a leading contributor to chronic diseases such as heart disease, diabetes, and mental health disorders. Factors such as age, sex, educational attainment, alcohol consumption, smoking habits, and regional disparities in health access play a critical role in shaping physical activity behaviors. Understanding these factors and their complex interactions is crucial for developing targeted interventions that can improve health outcomes and reduce health inequalities in Ontario.
+Physical activity is a cornerstone of public health, yet participation rates remain suboptimal across various populations in Ontario. This is especially concerning as physical inactivity is a leading contributor to chronic diseases such as heart disease, diabetes, and mental health disorders. Factors such as age, sex, educational attainment, alcohol consumption, smoking habits, and regional disparities in health access play an important role in shaping physical activity behaviors. Understanding these factors and their complex interactions is important for developing targeted interventions that can improve health outcomes and reduce health inequalities in Ontario.
 
 Recent studies suggest that certain demographic groups, such as older adults and individuals with lower educational levels, are more likely to experience barriers to physical activity, while alcohol consumption and smoking are associated with lower physical activity levels [@citationBaumanPhysicalActivity]. However, limited research has explored how these factors specifically interact in Ontario, a province with diverse populations and health regions. As the burden of chronic disease grows, addressing these disparities becomes even more urgent [@citationWarburtonPhysicalActivity] .
 
@@ -37,17 +37,16 @@ This study seeks to address the gaps in understanding by exploring how age, sex,
 
 The estimand of this paper would be the actual effect of socio-demographic factors, substance abuse, and health factors on how much time is spent on strenuous activities among individuals in Ontario who engage in physical activities.
 
-The remainder of this paper is structured as follows. @sec-data would provide a sense of the chosen Computing in the Humanities and Social Sciences dataset as well as data exploration of interested variables. @sec-Model goes into the details of the linear regression model fitted on the predictors of interest variables, for which it's results would be showcased in @sec-results. Finally @sec-discussion would interpret the results of the fitted linear regression model, which includes limitations of the paper. At the end of the paper in [Appendix -@sec-diagnostic_checks], this contains diagnostic checks for all models considered. 
+The remainder of this paper is structured as follows. @sec-data would provide a sense of the chosen Computing in the Humanities and Social Sciences dataset as well as data exploration of interested variables. @sec-Model goes into the details of the linear regression model fitted on the predictors of interest variables, for which it's results would be showcased in @sec-results. Finally @sec-discussion would interpret the results of the fitted linear regression model, which includes limitations of the paper. At the end of the paper in [Appendix -@sec-diagnostic_checks], this contains diagnostic checks for all models considered, and in [Appendix -@sec-survey_methodology], it contains a section regarding the survey and it's methodology.
 
-
-Overall, this paper was generated using R programming language [@citeR]. Reading of raw data and data manipulation was performed using `Tidyverse` package [@citeTidyverse] and parquet file handling was done using functions in `arrow` package [@citeArrow]. Generation of maps were done using functions in `tmap` package [@citationTmap]. Any other visual plots were using `ggplot`-related functions in Tidyverse [@citeTidyverse] and tables were generated using `kable` function in `knitr` package [@citeKnitR]. 
+Overall, this paper was generated using R programming language [@citeR]. Reading of raw data and data manipulation was performed using `Tidyverse` package [@citeTidyverse] and parquet file handling was done using functions in `arrow` package [@citeArrow]. Shape date was read into R using `sf` package, and generation of maps were done using functions in `tmap` package [@citeSF; @citationTmap]. Any other visual plots were using `ggplot`-related functions in Tidyverse [@citeTidyverse] and tables were generated using `kable` function in `knitr` package [@citeKnitR]. 
 
 
 # Data {#sec-data}
 
 ## Context of dataset
 
-The dataset chosen is obtained from Computing in the Humanities and Social Sciences/CHASS at the university of Toronto [@SDA_CHASS], specifically the Canadian Community Health Survey (CCHS) annual component 2017-2018 which was collected by @StatisticsOfCanada. The goal of the CCHS survey is to collect comprehensive and reliable health-related data on the Canadian population to support health surveillance, research, and program evaluation. It aims to provide timely, accessible, and flexible data for monitoring health trends, studying small populations and rare characteristics, and addressing emerging health issues, ultimately helping improve the health and well-being of Canadians. 
+The dataset chosen is obtained from Computing in the Humanities and Social Sciences/CHASS at the university of Toronto [@SDA_CHASS], specifically the Canadian Community Health Survey (CCHS) annual component 2017-2018 which was collected by @StatisticsOfCanada. The goal of the CCHS survey is to collect reliable health-related data on the Canadian population to support health surveillance, research, and program evaluation. It aims to provide timely, accessible, and flexible data for monitoring health trends, studying small populations and rare characteristics, and addressing emerging health issues, ultimately helping improve the health and well-being of Canadians. 
 
 Other datasets explored include sources from World Health Organisation and ParticipACTION. World Health Organisation provides aggregated data informing certain indicators of interest such as obesity levels and alcohol consumption. This can be found in the data section for Canada[@OtherSource1]. Also, ParticipACTION provides key statistics regarding proportion of adult population in canada meeting the national guidelines of 150 minutes of moderate to vigorous physical activites, as well as how sedentary canadians are [@OtherSource2]. However, the availability of raw individual level data is absent from these sources. Although the aggregated data gives us a sensing about general Canadian health, we are not able to focus our attention to the Ontario population. The dataset chosen from Canadian Community Health Survey (CCHS) annual component is ideal as it contains individual level data, where we are able to obtain the province the respondents are from. 
 
@@ -302,7 +301,7 @@ data_cleaned_1 |>
 
 Sex is a possible influential predictor for total time spent on physical activity. Historically, men are associated with exercise and involved in more labour intensive roles such as construction which involves heavy lifting. According to @womenExerciseWHO, women are less active than men by 5% since 2000. However, with the advent of female only establishments such as female gyms, and 32% increase in memberships at fitness and health clubs from 2010 to 2019, it would be interesting to see if the sex of an individual still affects the time spent on physical activites among physically active individuals.  
 
-According to @fig-barplot-sex, there is roughly an equal proportion of sexes from our dataset, with slightly more males (6082 respondents) than females (5859 respondents). Since this was a health survey conducted over phone call, there is an equal chance of a respondent to be male or female, which is roughly reflected ing @fig-barplot-sex.
+According to @fig-barplot-sex, there is roughly an equal proportion of sexes from our dataset, with slightly more males (6082 respondents) than females (5859 respondents). Since this was a health survey conducted over phone call, there is an equal chance of a respondent to be male or female, which is roughly reflected in @fig-barplot-sex.
 ```{r sex predictor barplot}
 #| echo: false
 #| warning: false
@@ -430,7 +429,7 @@ bottom_5_regions <- data_cleaned_1 |>
 
 regions_to_keep <- c(top_5_regions, bottom_5_regions)
 
-source("../scripts/08-health_region_map.R")
+source("../scripts/05-health_region_map.R")
 
 health_region_map
 ```
@@ -1033,8 +1032,87 @@ From @fig-diagnostic_plot_scale_location_final_model, we can see that the standa
 plot(final_model,3, sub='')
 ```
 
-Overall, since the residual assumptions in linear regression are satisfied, we are able to use the coefficient estimates obtained from our final fitted linear model to gain insights into relationship between our predictors and the response as discussed in @sec-discussion.
+Overall, since the residual assumptions in linear regression are satisfied, we are able to use the coefficient estimates obtained from our final fitted linear model to gain understanding in the relationship between our predictors and the response as discussed in @sec-discussion.
 
+# Survey: Canadian Community Health Survey (CCHS) Annual component {#sec-survey_methodology}
+
+\newpage
+
+## CCHS Background
+
+The purpose of CCHS is to provide cross sectional estimates of factors related to different health determinants in Canada. The use case for the Canadian health dataset is non-exhaustive and many have used it for the betterment of Canada. In the department of sociology and social work, University of Toronto, researchers have used the weight and weight perception data from the 2017-2018 CCHS to predict adolescents mental health, and they were able to find out that normal weighted girls are not immune from poor mental health arising from poor weight perceptions, hence urging specialists in the mental health field to increase support for these girls that have not been receiving enough avenues [@citationUofTCCHS]. The Canadian Partnership Against Cancer also uses CCHS data to access the severity of the cervical cancer among Canadians, streamlining their cancer screening process as a result and urging the country to focus resources to address inequalities in access to cervical cancer prevention and treatment options between indigenous communities and poor regions [@citationCanadianPartnership2; @citationCanadianPartnership1]. The one thing that ties many of the health-related studies arising from the use of CCHS studies is to address underrepresented communities in Canada.
+
+With the purpose of unifying data across health sources, the Statistics of Canada had began conducting surveys yearly since 2007. From 2015, there was a redesign to their survey methodology that is used for the dataset that was used in this paper.
+
+## CCHS Target Population
+
+Their target population covers individuals aged 12 and above living in all ten provinces of Canada. The target population excludes the following...
+
+- individuals living on reserves, more commonly known as indigenous populations with their own governance within Canada ()
+- full time servicemen in the Canadian Armed Forces
+- youths aged 12 to 17 residing in foster homes
+- individuals residing in jail, nursing homes, mental health institutions and shelters
+- individuals in quebec health region of Nunavik and Terres-Cries-de-la-Baie-James
+
+According to CCHS, they account for lesser than 3% of the population
+
+## CCHS Sampling Frame
+
+The sampling frame for the Canadian Community Health Survey (CCHS) consists of two distinct components based on the target population. For the adult population (18 years and older), the sampling frame is derived from an area frame used by the Canadian Labour Force Survey (LFS). This area frame includes all primary sampling units (PSUs), which are geographic clusters of dwellings within health regions across Canada. For the youth population (12 to 17 years old), the sampling frame is based on a list derived from the Canadian Child Benefit (CCB) files, which includes a list of all program beneficiaries with their names, addresses, and phone numbers.
+
+## CCHS Sample
+The sample for the CCHS is drawn from the respective sampling frames for adults and youth. Approximately 130,000 individuals are selected for the survey, with around 120,000 respondents allocated to the adult population and 10,000 to the youth population. The sample is stratified by health region, ensuring that each health region has a minimum of 500 respondents. The sample for adults is selected from the area frame using a multi-stage sampling process, while the youth sample is directly selected from the CCB list. The allocation for provinces and territories is based on population size, with a focus on achieving representativeness within each health region. 
+
+## CCHS Data Collection
+Sample Recruitment for the 2018 Canadian Community Health Survey (CCHS)
+The sample for the 2018 CCHS was recruited through a multi-stage, stratified process designed to obtain a representative sample of the Canadian population, aged 12 years and older. The sampling process was divided into two main categories based on the target age groups: individuals aged 18 and older and youths aged 12 to 17.
+
+\noindent
+The sample was drawn from two distinct frames:
+
+- Area Frame: This frame was used to select households for respondents aged 18 and older. The area frame covers the entire Canadian population and is designed to represent geographic areas across the country.
+- Canadian Child Benefit (CCB) Frame: This frame was used to select households with youths aged 12 to 17. The CCB frame was specifically used to identify youth in households receiving the Canadian Child Benefit.
+
+\noindent
+The data collection for the CCHS was carried out using two primary methods:
+
+- Computer-Assisted Telephone Interviewing (CATI): This method was used for approximately 75% of respondents selected from the area frame and for all respondents selected from the CCB frame (aged 12-17). Interviews were conducted over the phone by trained interviewers in centralized call centers.
+- Computer-Assisted Personal Interviewing (CAPI): This method was used for about 25% of the area frame respondents. These interviews were conducted face-to-face by decentralized field interviewers using laptops. Interviewers primarily visited households in person, though telephone follow-ups were permitted if necessary.
+
+\noindent
+The sampling process was designed to maximize coverage and minimize non-response. Each regional office of Statistics Canada was responsible for assigning cases to interviewers, with careful consideration of the geographic and demographic distribution of respondents. The sample was stratified by health region to ensure representation from each geographic area. Interviewers were assigned cases based on their regional collection office, and the assignments typically included no more than 15 cases per interviewer to ensure manageable workloads. These assignments were planned to be completed in four non-overlapping three-month collection periods, with different phases for initial and follow-up attempts.
+
+\noindent
+To optimize the contact process, the interviewers first initiated contact with the selected households by either telephone or personal visit, depending on the sampling frame and mode of data collection. If initial contact was unsuccessful, additional efforts were made to reach the household through scheduled callbacks, including multiple attempts at different times and days. If necessary, personal visits were conducted to obtain the interview.
+
+\noindent
+For youths aged 12-17 selected for interviews, interviewers were required to obtain verbal consent from a parent or guardian before interviewing youths aged 12-14. If a parent or guardian requested to see the questionnaire, they were provided with a copy before the interview. In cases where the selected youth was unable to complete the interview, a "Person Most Knowledgeable" (PMK) within the household was interviewed instead. This procedure ensured that household-level information was collected even if the selected youth was unable to provide it.
+
+\noindent
+If the selected respondent was unable to participate due to physical or mental health conditions, a proxy interview was conducted. A knowledgeable household member would provide information on behalf of the selected respondent. However, the more personal and sensitive questions were omitted from these interviews, as the proxy could not reliably answer them.
+
+\noindent
+Throughout the recruitment process, several quality control measures were in place to ensure the accuracy and validity of the data. A random selection of interviews was validated to ensure the integrity of the data. These validations involved contacting households to confirm that the interview took place and checking the quality of the responses. Cumulative reports were generated at the end of each collection period, showing response rates by region, to help regional offices identify areas that required additional follow-up. Specific sections of interviews were recorded for quality control purposes and analyzed to ensure proper procedures were followed by interviewers.
+
+## CCHS Nonresponse and Nonresponse handling
+
+The Canadian Community Health Survey (CCHS) employs a systematic approach to address nonresponse at both the household and person levels. This ensures that the survey results remain representative of the general population, even when certain individuals or households do not respond. The nonresponse handling methodology is as follows:
+
+\noindent
+1. Household Nonresponse \newline
+
+Nonresponse at the household level occurs when a sampled household either refuses to participate, is unreachable, or provides unusable data. To adjust for nonresponse, the survey sample is divided into response homogeneity groups (RHGs), which group households based on their likelihood of responding. This helps ensure that the adjustment for nonresponse is made based on similar response propensities.
+A logistic regression model is used to predict the likelihood of a household responding to the survey. Based on the predicted response probabilities, an adjustment factor is computed within each RHG. This factor helps correct for nonresponse by redistributing the weight of nonresponding households to those that did respond. The final adjustment is made by multiplying the weight of responding households by the adjustment factor, resulting in a new weight. Nonresponding households are excluded from the weighting process after this adjustment.
+
+\noindent
+2. Person-Level Nonresponse \newline
+
+The interviewer first collects a complete roster of household members.
+A selected individual from the roster is then interviewed. In cases where the selected individual cannot be contacted or refuses to participate, person-level nonresponse occurs. Similar to household nonresponse, an adjustment is applied to the weights of responding individuals to account for those who did not respond. This ensures that the survey remains representative of the entire population. A logistic regression model is applied to estimate the likelihood that a selected individual will respond to the survey. This model uses information gathered during the first part of the interview (e.g., age, sex, etc.) and the location of the household. The selected individuals are then grouped into response homogeneity groups (RHGs) based on their calculated response probabilities. Within each RHG, an adjustment factor is calculated to correct for person-level.
+
+By including factors such as geographic location and household characteristics in the nonresponse adjustment models, CCHS enhances the likelihood that the adjusted sample is representative of diverse populations across different regions and demographic groups. Also, the distinct handling of household nonresponse (via weight adjustment A6) and person nonresponse (via weight adjustment A9) ensures that both levels of nonresponse are addressed separately, which helps maintain the accuracy of estimates at both the household and individual levels.
+
+However, the use of multiple weighting adjustments, while intended to improve representativeness, can sometimes lead to overfitting or over-adjustment. This may result in a dataset that over-represents certain characteristics at the expense of others, especially if the logistic regression models are not perfectly specified or if important variables are omitted.  Furthermore, even with sophisticated adjustments, response bias — such as social desirability bias or recall bias — can still affect the dataset. Respondents may provide inaccurate or socially desirable answers, and the weighting adjustments cannot fully correct for these biases, especially if they are not uniform across all demographic groups.
 
 \newpage
 
