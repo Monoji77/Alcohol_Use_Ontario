@@ -1,12 +1,12 @@
 ---
-title: "Men and past smokers from ontario are potentially more physically active than women and non-smokers respectively"
+title: "Men and past smokers from ontario are potentially more physically active than women and non-smokers"
 subtitle: "Women are engaging in lesser physical activities than men. Furthermore, individuals who smoked before are more likely to engage in physical activity. Consumption of stimulant-related drugs could have also increased as well, resulting in increased overall physical activities in Ontario."
 author: 
   - Chris Yong Hong Sen
-thanks: "Code and data are available at: [https://github.com/Monoji77/physical_health_ontario](https://github.com/Monoji77/physical_health_ontario)."
+thanks: "Code and data are available at: [https://github.com/Monoji77/Alcohol_Use_Ontario](https://github.com/Monoji77/Alcohol_Use_Ontario)."
 date: today
 date-format: long
-abstract: "This study explores factors influencing physical activity levels in Ontario, focusing on demographic and substance abuse. Our findings reveal that women engage in less physical activity than men, while individuals who have smoked in the past and those consuming stimulant-related drugs are more likely to be physically active. Additionally, age, highest educational attainment, and health region also play significant roles in determining physical activity levels. These findings highlight the complex interplay of gender, lifestyle behaviors, and sociodemographic factors, providing helpful information for designing targeted public health interventions to promote physical activity."
+abstract: "This study explores factors influencing physical activity levels in Ontario, focusing on demographic and substance abuse. Our findings reveal that women engage in less physical activity than men, while individuals who have smoked in the past and those consuming stimulant-related drugs are more likely to be physically active. Additionally, age, highest educational attainment, and health region also play significant roles in determining physical activity levels. These insights highlight the complex interplay of gender, lifestyle behaviors, and sociodemographic factors, providing valuable information for designing targeted public health interventions to promote physical activity."
 format: 
   pdf:
     fig-pos: H
@@ -29,7 +29,7 @@ library(lme4) # reporting BIC values
 
 # Introduction
 
-Physical activity is a cornerstone of public health, yet participation rates remain suboptimal across various populations in Ontario. This is especially concerning as physical inactivity is a leading contributor to chronic diseases such as heart disease, diabetes, and mental health disorders. Factors such as age, sex, educational attainment, alcohol consumption, smoking habits, and regional disparities in health access play an important role in shaping physical activity behaviors. Understanding these factors and their complex interactions is important for developing targeted interventions that can improve health outcomes and reduce health inequalities in Ontario.
+Physical activity is a cornerstone of public health, yet participation rates remain suboptimal across various populations in Ontario. This is especially concerning as physical inactivity is a leading contributor to chronic diseases such as heart disease, diabetes, and mental health disorders. Factors such as age, sex, educational attainment, alcohol consumption, smoking habits, and regional disparities in health access play a critical role in shaping physical activity behaviors. Understanding these factors and their complex interactions is crucial for developing targeted interventions that can improve health outcomes and reduce health inequalities in Ontario.
 
 Recent studies suggest that certain demographic groups, such as older adults and individuals with lower educational levels, are more likely to experience barriers to physical activity, while alcohol consumption and smoking are associated with lower physical activity levels [@citationBaumanPhysicalActivity]. However, limited research has explored how these factors specifically interact in Ontario, a province with diverse populations and health regions. As the burden of chronic disease grows, addressing these disparities becomes even more urgent [@citationWarburtonPhysicalActivity] .
 
@@ -37,16 +37,17 @@ This study seeks to address the gaps in understanding by exploring how age, sex,
 
 The estimand of this paper would be the actual effect of socio-demographic factors, substance abuse, and health factors on how much time is spent on strenuous activities among individuals in Ontario who engage in physical activities.
 
-The remainder of this paper is structured as follows. @sec-data would provide a sense of the chosen Computing in the Humanities and Social Sciences dataset as well as data exploration of interested variables. @sec-Model goes into the details of the linear regression model fitted on the predictors of interest variables, for which it's results would be showcased in @sec-results. Finally @sec-discussion would interpret the results of the fitted linear regression model, which includes limitations of the paper. At the end of the paper in [Appendix -@sec-diagnostic_checks], this contains diagnostic checks for all models considered, and in [Appendix -@sec-survey_methodology], it contains a section regarding the survey and it's methodology.
+The remainder of this paper is structured as follows. @sec-data would provide a sense of the chosen Computing in the Humanities and Social Sciences dataset as well as data exploration of interested variables. @sec-Model goes into the details of the linear regression model fitted on the predictors of interest variables, for which it's results would be showcased in @sec-results. Finally @sec-discussion would interpret the results of the fitted linear regression model, which includes limitations of the paper. At the end of the paper in [Appendix -@sec-diagnostic_checks], this contains diagnostic checks for all models considered. 
 
-Overall, this paper was generated using R programming language [@citeR]. Reading of raw data and data manipulation was performed using `Tidyverse` package [@citeTidyverse] and parquet file handling was done using functions in `arrow` package [@citeArrow]. Shape date was read into R using `sf` package, and generation of maps were done using functions in `tmap` package [@citeSF; @citationTmap]. Any other visual plots were using `ggplot`-related functions in Tidyverse [@citeTidyverse] and tables were generated using `kable` function in `knitr` package [@citeKnitR]. 
+
+Overall, this paper was generated using R programming language [@citeR]. Reading of raw data and data manipulation was performed using `Tidyverse` package [@citeTidyverse] and parquet file handling was done using functions in `arrow` package [@citeArrow]. Generation of maps were done using functions in `tmap` package [@citationTmap]. Any other visual plots were using `ggplot`-related functions in Tidyverse [@citeTidyverse] and tables were generated using `kable` function in `knitr` package [@citeKnitR]. 
 
 
 # Data {#sec-data}
 
 ## Context of dataset
 
-The dataset chosen is obtained from Computing in the Humanities and Social Sciences/CHASS at the university of Toronto [@SDA_CHASS], specifically the Canadian Community Health Survey (CCHS) annual component 2017-2018 which was collected by @StatisticsOfCanada. The goal of the CCHS survey is to collect reliable health-related data on the Canadian population to support health surveillance, research, and program evaluation. It aims to provide timely, accessible, and flexible data for monitoring health trends, studying small populations and rare characteristics, and addressing emerging health issues, ultimately helping improve the health and well-being of Canadians. 
+The dataset chosen is obtained from Computing in the Humanities and Social Sciences/CHASS at the university of Toronto [@SDA_CHASS], specifically the Canadian Community Health Survey (CCHS) annual component 2017-2018 which was collected by @StatisticsOfCanada. The goal of the CCHS survey is to collect comprehensive and reliable health-related data on the Canadian population to support health surveillance, research, and program evaluation. It aims to provide timely, accessible, and flexible data for monitoring health trends, studying small populations and rare characteristics, and addressing emerging health issues, ultimately helping improve the health and well-being of Canadians. 
 
 Other datasets explored include sources from World Health Organisation and ParticipACTION. World Health Organisation provides aggregated data informing certain indicators of interest such as obesity levels and alcohol consumption. This can be found in the data section for Canada[@OtherSource1]. Also, ParticipACTION provides key statistics regarding proportion of adult population in canada meeting the national guidelines of 150 minutes of moderate to vigorous physical activites, as well as how sedentary canadians are [@OtherSource2]. However, the availability of raw individual level data is absent from these sources. Although the aggregated data gives us a sensing about general Canadian health, we are not able to focus our attention to the Ontario population. The dataset chosen from Canadian Community Health Survey (CCHS) annual component is ideal as it contains individual level data, where we are able to obtain the province the respondents are from. 
 
@@ -301,7 +302,7 @@ data_cleaned_1 |>
 
 Sex is a possible influential predictor for total time spent on physical activity. Historically, men are associated with exercise and involved in more labour intensive roles such as construction which involves heavy lifting. According to @womenExerciseWHO, women are less active than men by 5% since 2000. However, with the advent of female only establishments such as female gyms, and 32% increase in memberships at fitness and health clubs from 2010 to 2019, it would be interesting to see if the sex of an individual still affects the time spent on physical activites among physically active individuals.  
 
-According to @fig-barplot-sex, there is roughly an equal proportion of sexes from our dataset, with slightly more males (6082 respondents) than females (5859 respondents). Since this was a health survey conducted over phone call, there is an equal chance of a respondent to be male or female, which is roughly reflected in @fig-barplot-sex.
+According to @fig-barplot-sex, there is roughly an equal proportion of sexes from our dataset, with slightly more males (6082 respondents) than females (5859 respondents). Since this was a health survey conducted over phone call, there is an equal chance of a respondent to be male or female, which is roughly reflected ing @fig-barplot-sex.
 ```{r sex predictor barplot}
 #| echo: false
 #| warning: false
@@ -1032,7 +1033,7 @@ From @fig-diagnostic_plot_scale_location_final_model, we can see that the standa
 plot(final_model,3, sub='')
 ```
 
-Overall, since the residual assumptions in linear regression are satisfied, we are able to use the coefficient estimates obtained from our final fitted linear model to gain understanding in the relationship between our predictors and the response as discussed in @sec-discussion.
+Overall, since the residual assumptions in linear regression are satisfied, we are able to use the coefficient estimates obtained from our final fitted linear model to gain insights into relationship between our predictors and the response as discussed in @sec-discussion.
 
 # Survey: Canadian Community Health Survey (CCHS) Annual component {#sec-survey_methodology}
 
@@ -1109,6 +1110,7 @@ A logistic regression model is used to predict the likelihood of a household res
 
 The interviewer first collects a complete roster of household members.
 A selected individual from the roster is then interviewed. In cases where the selected individual cannot be contacted or refuses to participate, person-level nonresponse occurs. Similar to household nonresponse, an adjustment is applied to the weights of responding individuals to account for those who did not respond. This ensures that the survey remains representative of the entire population. A logistic regression model is applied to estimate the likelihood that a selected individual will respond to the survey. This model uses information gathered during the first part of the interview (e.g., age, sex, etc.) and the location of the household. The selected individuals are then grouped into response homogeneity groups (RHGs) based on their calculated response probabilities. Within each RHG, an adjustment factor is calculated to correct for person-level.
+
 
 By including factors such as geographic location and household characteristics in the nonresponse adjustment models, CCHS enhances the likelihood that the adjusted sample is representative of diverse populations across different regions and demographic groups. Also, the distinct handling of household nonresponse (via weight adjustment A6) and person nonresponse (via weight adjustment A9) ensures that both levels of nonresponse are addressed separately, which helps maintain the accuracy of estimates at both the household and individual levels.
 
