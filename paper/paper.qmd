@@ -1,12 +1,12 @@
 ---
-title: "Men and past smokers from ontario are potentially more physically active than women and non-smokers"
-subtitle: "Women are engaging in lesser physical activities than men. Furthermore, individuals who smoked before are more likely to engage in physical activity. Consumption of stimulant-related drugs could have also increased as well, resulting in increased overall physical activities in Ontario."
+title: "Men and past smokers from Ontario are potentially more physically active than women and non-smokers"
+subtitle: "Physical activity is discovered to be strongly associated with gender, smoking habits, and drug consumption."
 author: 
   - Chris Yong Hong Sen
 thanks: "Code and data are available at: [https://github.com/Monoji77/Alcohol_Use_Ontario](https://github.com/Monoji77/Alcohol_Use_Ontario)."
 date: today
 date-format: long
-abstract: "This study explores factors influencing physical activity levels in Ontario, focusing on demographic and substance abuse. Our findings reveal that women engage in less physical activity than men, while individuals who have smoked in the past and those consuming stimulant-related drugs are more likely to be physically active. Additionally, age, highest educational attainment, and health region also play significant roles in determining physical activity levels. These insights highlight the complex interplay of gender, lifestyle behaviors, and sociodemographic factors, providing valuable information for designing targeted public health interventions to promote physical activity."
+abstract: "This study explores factors influencing physical activity levels in Ontario, focusing on demographics and substance abuse. Our findings reveal that women engage in less physical activity than men, while individuals who have smoked in the past and those consuming stimulant-related drugs are more likely to be physically active. Additionally, age, highest educational attainment, and health region also play significant roles in determining physical activity levels. These insights highlight the complex interplay of gender, lifestyle behaviors, and sociodemographic factors, providing valuable information for designing targeted public health interventions to promote physical activity."
 format: 
   pdf:
     fig-pos: H
@@ -31,29 +31,29 @@ library(lme4) # reporting BIC values
 
 Physical activity is a cornerstone of public health, yet participation rates remain suboptimal across various populations in Ontario. This is especially concerning as physical inactivity is a leading contributor to chronic diseases such as heart disease, diabetes, and mental health disorders. Factors such as age, sex, educational attainment, alcohol consumption, smoking habits, and regional disparities in health access play a critical role in shaping physical activity behaviors. Understanding these factors and their complex interactions is crucial for developing targeted interventions that can improve health outcomes and reduce health inequalities in Ontario.
 
-Recent studies suggest that certain demographic groups, such as older adults and individuals with lower educational levels, are more likely to experience barriers to physical activity, while alcohol consumption and smoking are associated with lower physical activity levels [@citationBaumanPhysicalActivity]. However, limited research has explored how these factors specifically interact in Ontario, a province with diverse populations and health regions. As the burden of chronic disease grows, addressing these disparities becomes even more urgent [@citationWarburtonPhysicalActivity] .
+Recent studies suggest that certain demographic groups, such as older adults and individuals with lower educational levels, are more likely to experience barriers to physical activity. At the same time, alcohol consumption and smoking are associated with lower physical activity levels [@citationBaumanPhysicalActivity]. However, limited research has explored how these factors specifically interact in Ontario, a province with diverse populations and health regions. As the burden of chronic disease grows, addressing these disparities becomes even more urgent [@citationWarburtonPhysicalActivity].
 
 This study seeks to address the gaps in understanding by exploring how age, sex, educational attainment, alcohol consumption, smoking, and health regions influence physical activity patterns in Ontario. By examining these relationships, we aim to provide actionable insights that can inform public health policies and interventions tailored to the needs of specific population groups. Our findings will be pivotal in developing strategies to increase physical activity participation and improve health equity in Ontario.
 
 The estimand of this paper would be the actual effect of socio-demographic factors, substance abuse, and health factors on how much time is spent on strenuous activities among individuals in Ontario who engage in physical activities.
 
-The remainder of this paper is structured as follows. @sec-data would provide a sense of the chosen Computing in the Humanities and Social Sciences dataset as well as data exploration of interested variables. @sec-Model goes into the details of the linear regression model fitted on the predictors of interest variables, for which it's results would be showcased in @sec-results. Finally @sec-discussion would interpret the results of the fitted linear regression model, which includes limitations of the paper. At the end of the paper in [Appendix -@sec-diagnostic_checks], this contains diagnostic checks for all models considered. 
+The remainder of this paper is structured as follows. @sec-data would provide a sense of the chosen Computing in the Humanities and Social Sciences dataset as well as data exploration of interested variables. @sec-Model goes into the details of the linear regression model fitted on the predictors of interest variables, for which its results would be showcased in @sec-results. @sec-discussion would then interpret the results of the fitted linear regression model, which includes the limitations of the paper. In [Appendix -@sec-diagnostic_checks], it contains diagnostic checks for all models considered. Finally, [Appendix -@sec-survey_methodology] goes through the background and surveying methodology of the CCHS dataset.
 
 
-Overall, this paper was generated using R programming language [@citeR]. Reading of raw data and data manipulation was performed using `Tidyverse` package [@citeTidyverse] and parquet file handling was done using functions in `arrow` package [@citeArrow]. Generation of maps were done using functions in `tmap` package [@citationTmap]. Any other visual plots were using `ggplot`-related functions in Tidyverse [@citeTidyverse] and tables were generated using `kable` function in `knitr` package [@citeKnitR]. 
+Overall, this paper was generated using R programming language [@citeR]. Reading of raw data and data manipulation was performed using `Tidyverse` package [@citeTidyverse] and parquet file handling was done using functions in `arrow` package [@citeArrow]. Generation of maps was done using functions in `tmap` package [@citationTmap]. Any other visual plots were using `ggplot`-related functions in Tidyverse [@citeTidyverse] and tables were generated using `kable` function in `knitr` package [@citeKnitR]. 
 
 
 # Data {#sec-data}
 
 ## Context of dataset
 
-The dataset chosen is obtained from Computing in the Humanities and Social Sciences/CHASS at the university of Toronto [@SDA_CHASS], specifically the Canadian Community Health Survey (CCHS) annual component 2017-2018 which was collected by @StatisticsOfCanada. The goal of the CCHS survey is to collect comprehensive and reliable health-related data on the Canadian population to support health surveillance, research, and program evaluation. It aims to provide timely, accessible, and flexible data for monitoring health trends, studying small populations and rare characteristics, and addressing emerging health issues, ultimately helping improve the health and well-being of Canadians. 
+The dataset chosen is obtained from Computing in the Humanities and Social Sciences/CHASS at the University of Toronto [@SDA_CHASS], specifically the Canadian Community Health Survey (CCHS) annual component 2017-2018 which was collected by @StatisticsOfCanada. The goal of the CCHS survey is to collect comprehensive and reliable health-related data on the Canadian population to support health surveillance, research, and program evaluation. It aims to provide timely, accessible, and flexible data for monitoring health trends, studying small populations and rare characteristics, and addressing emerging health issues, ultimately helping improve the health and well-being of Canadians. 
 
-Other datasets explored include sources from World Health Organisation and ParticipACTION. World Health Organisation provides aggregated data informing certain indicators of interest such as obesity levels and alcohol consumption. This can be found in the data section for Canada[@OtherSource1]. Also, ParticipACTION provides key statistics regarding proportion of adult population in canada meeting the national guidelines of 150 minutes of moderate to vigorous physical activites, as well as how sedentary canadians are [@OtherSource2]. However, the availability of raw individual level data is absent from these sources. Although the aggregated data gives us a sensing about general Canadian health, we are not able to focus our attention to the Ontario population. The dataset chosen from Canadian Community Health Survey (CCHS) annual component is ideal as it contains individual level data, where we are able to obtain the province the respondents are from. 
+Other datasets explored include sources from the World Health Organisation and ParticipACTION. World Health Organisation provides aggregated data informing certain indicators of interest such as obesity levels and alcohol consumption. This can be found in the data section for Canada[@OtherSource1]. Also, ParticipACTION provides key statistics regarding the proportion of the adult population in Canada meeting the national guidelines of 150 minutes of moderate to vigorous physical activities, as well as how sedentary Canadians are [@OtherSource2]. However, the availability of raw individual-level data is absent from these sources. Although the aggregated data gives us a sense of general Canadian health, we are not able to focus our attention on the Ontario population. The dataset chosen from the Canadian Community Health Survey (CCHS) annual component is ideal as it contains individual-level data, where we are able to obtain the province the respondents are from in order to obtain our desired target population.
 
 ## Original Dataset
 
-The dataset provides 113,290 individual response from Canadians all throughout the country. Surveys were conducted to collect health-related data from respondents. The relevant data collected includes...
+The dataset provides 113,290 individual responses from Canadians throughout the country. Surveys were conducted to collect health-related data from respondents. The relevant data collected includes...
 
 - Demographics and Identity: 
 Age, gender, marital status, citizenship, Aboriginal identity, visible minority status, immigrant status, language (mother tongue, spoken at home, first official), sexual orientation.
@@ -83,24 +83,24 @@ Aboriginal group, immigrant duration, visible minority, minority health disparit
 - Geographic and Household Data:
 Geographic location, number of persons or households, household demographics.
 
-This dataset is highly suitable in determining both quantitative factors such as  c qualitative factors  
+This dataset is highly suitable for determining both quantitative factors such as  c qualitative factors.
 
 
 ## Measurement {#sec-measurement}
 
 Our goal is to explore the actual effect of socio-demographic factors, substance abuse, and health factors on how much time is spent on physical activities among active individuals in Ontario. The instrument of measurement would be surveys. Through the cross-sectional survey conducted by CCHS, we are able to get the number of hours spent on physical activities per individual, our response variable.
 
-According to the questionnaire, respondents were asked in a phone survey to indicate whether they had engaged in any strenuous activity that lasted at least 10 minutes and made them sweat and breathe a little harder in the past 7 days. Afterwards, they were asked to indicate the total time spent on those activities. To address the concern of recall bias where an individual may not recall the specific timing in engaging with physical activity, surveyors sectioned physical activity into commuting, sports, work and volunteering. Then within each section, surveyors asked which day (Monday to Sunday) in the past week had they engaged in such activities that made them sweat and breathe a little harder. By doing so, the activities individuals did during the past week would be anchored on the days of the week. Following this would be for the respondents to indicate the total number of hours they engaged in each section of physical activities for the past 7 days.
+According to the questionnaire, respondents were asked in a phone survey to indicate whether they had engaged in any strenuous activity that lasted at least 10 minutes and made them sweat and breathe a little harder in the past 7 days. Afterward, they were asked to indicate the total time spent on those activities. To address the concern of recall bias where an individual may not recall the specific timing in engaging with physical activity, surveyors sectioned physical activity into commuting, sports, work, and volunteering. Then within each section, surveyors asked which day (Monday to Sunday) in the past week had they engaged in such activities that made them sweat and breathe a little harder. By doing so, the activities individuals did during the past week would be anchored on the days of the week. Following this would be for the respondents to indicate the total number of hours they engaged in each section of physical activities for the past 7 days.
 
 In addition, the explanatory variables we are interested in were also obtained in the same survey. 
 
-For socio-demographic factors possibly affecting time spent on physical activites, the surveyors asked the respondent for their age (DHH_AGE) from 0 years old to 121 years old), sex (DHH_SEX) being either male or female, personal income obtained from tax forms submitted to the Canada Revenue Agency upon consent from respondent, geographical health region (ADM_Q037) that was provided by respondents when they agreed to the phone survey, and highest educational attainment (EHG2_04) ranging from less than high school diploma to master's degree and above. 
+For socio-demographic factors possibly affecting time spent on physical activities, the surveyors asked the respondent for their age (DHH_AGE) from 0 years old to 121 years old), sex (DHH_SEX) being either male or female, personal income obtained from tax forms submitted to the Canada Revenue Agency upon consent from the respondent, geographical health region (ADM_Q037) that was provided by respondents when they agreed to the phone survey, and highest educational attainment (EHG2_04) ranging from less than high school diploma to master's degree and above. 
 
-For substance abuse, respondents were asked how frequent they consumed alcoholic drinks in the past 12 months (ALC_Q015), ranging from less than once per month to everyday. Surveyors also asked respondents for usage of drugs including one-time marijuana or hashish in the past 12 months (DRG_Q005 to DRG_Q075), and whether they have smoked hundred cigarettes in the past 12 months (SMK_Q020). The last 2 questions allowed respondents to indicate a simple yes or no flag to express their answer.
+For substance abuse, respondents were asked how frequently they consumed alcoholic drinks in the past 12 months (ALC_Q015), ranging from less than once per month to every day. Surveyors also asked respondents about the usage of drugs including one-time marijuana or hashish in the past 12 months (DRG_Q005 to DRG_Q075), and whether they have smoked hundred cigarettes in the past 12 months (SMK_Q020). The last 2 questions allowed respondents to indicate a simple yes or no flag to express their answer.
 
-For health factors, questions were asked to determine an individual's body mass index ranging from underweight to obese and perceived life/work stress ranging from not at all stressful to extremely stressful. Additionally, surveyors asked respondents if they have mood disorders (E.g. depression, bipolarism, mania), for which respondents replied with a simple yes or no. 
+For health factors, questions were asked to determine an individual's body mass index ranging from underweight to obese, and perceived life/work stress ranging from not at all stressful to extremely stressful. Additionally, surveyors asked respondents if they have mood disorders (E.g. depression, bipolar, mania), to which respondents replied with a simple yes or no. 
 
-Overall, each entry obtained by respondents assigns quantitative values to each factor and the the response for which we can explore subsequently using linear regression to determine which factors have greater influence in the time spent on physical activities amongst active individuals.
+Overall, each entry obtained by respondents assigns quantitative values to each factor and the the response for which we can explore subsequently using linear regression to determine which factors have greater influence on the time spent on physical activities amongst active individuals.
 
 
 ## Response variable: Time spent on physical activity in the past 7 days
@@ -109,7 +109,7 @@ From the CCHS dataset, we look at paadvmva variable. This variable is continuous
 
 By using this variable, we are assuming that the routine of an individual from the past 7 days is indicative of their general routine beyond the past 7 days. This variable may not account for individuals who only began a physical routine involving sweat within the past 7 days and were sedentary before, which may not be helpful if included in subsequent model fitting.
 
-Since we are interested in individuals that are already engaging in strenuous activities, we can filter $time\_spent\_vigorous\_exercise\_7d$ to exclude 0. After removing such entries, we obtain the following summary statistics as shown in @tbl-summarised_statistics_time_spent_vigorous_exercise_7d. The median time spent on physical activities the past 7 days would be 300 minutes, which averages out to 43 minutes per day. 
+Since we are interested in individuals who are already engaging in strenuous activities, we can filter $time\_spent\_vigorous\_exercise\_7d$ to exclude 0. After removing such entries, we obtain the following summary statistics as shown in @tbl-summarised_statistics_time_spent_vigorous_exercise_7d. The median time spent on physical activities the past 7 days would be 300 minutes, which averages out to 43 minutes per day. 
 
 ```{r}
 #| echo: false
@@ -153,7 +153,7 @@ kable(response_var_summarised_data)
 # round(nrow(outlier_observation)/nrow(data_cleaned_1) * 100,0)
 ```
 
-Interestingly, the maximum time spent on physical activities the past 7 days was 9902 minutes, and this averages to 1415 minutes per day, which is equivalent to 23.5 hours in a day. This is very unlikely as this suggests that an individual is constantly engaging in physical strenuous activity without sleeping. Logically, this suggests the possibility of outlier values. By observing @fig-boxplot_time_spent_vigorous_exercise_7d, there are many outlier observations for this variable. Roughly 10% of the observed data are considered outliers as they fall outside 1.5 times the interquartile range from the 25% and 75% quartile values. We would be performing log transformation on our response variable. The motivation for this is detailed in [Appendix -@sec-transform-response].
+Interestingly, the maximum time spent on physical activities in the past 7 days was 9902 minutes, and this averages to 1415 minutes per day, which is equivalent to 23.5 hours in a day. This is very unlikely as this suggests that an individual is constantly engaging in physical strenuous activity without sleeping. Logically, this suggests the possibility of outlier values. By observing @fig-boxplot_time_spent_vigorous_exercise_7d, there are many outlier observations for this variable. Roughly 10% of the observed data are considered outliers as they fall outside 1.5 times the interquartile range from the 25% and 75% quartile values. We would be performing log transformation on our response variable. The motivation for this is detailed in [Appendix -@sec-transform-response].
 
 
 ```{r}
@@ -161,7 +161,7 @@ Interestingly, the maximum time spent on physical activities the past 7 days was
 #| warning: false
 #| message: false
 #| label: fig-boxplot_time_spent_vigorous_exercise_7d
-#| fig-cap: Boxplot of time spent on physical activities in the past 7 days
+#| fig-cap: Summary statistic of time spent on physical activities in the past 7 days
 
 data_cleaned_1 |> 
   ggplot(aes(y=time_spent_vigorous_exercise_7d, x='')) +
@@ -178,28 +178,30 @@ data_cleaned_1 |>
 
 Subsequently, we would have to remove observations that are very unlikely as they do not represent the general population and could skew the distribution of time spent on physical activities.
 
-By observing the histogram generated in @fig-hist-time_spent_vigorous_exercise_7d, we obtain a severely right skewed response histogram where most observations lie between 0 to 500 minutes. For the building of linear models in subsequent sections of the paper, this would not be ideal as linear regression assumes a normal distribution of the response variable, suggesting that a transformation would be required to fit a linear regression model.
+By observing @fig-hist-time_spent_vigorous_exercise_7d, we obtain a severely right-skewed response where most observations lie between 0 to 500 minutes. For the building of linear models in subsequent sections of the paper, this would not be ideal as linear regression assumes a normal distribution of the response variable, suggesting that a transformation would be required to fit a linear regression model.
 
 ```{r response variable exploration}
 #| echo: false
 #| warning: false
 #| message: false
 #| label: fig-hist-time_spent_vigorous_exercise_7d
-#| fig-cap: Histogram of time spent on physical activities the past 7 days
+#| fig-cap: Time spent on physical activities the past 7 days
 
 hist(data_cleaned_1$time_spent_vigorous_exercise_7d,
      main='',
-     xlab = '',
+     xlab = 'no. of minutes',
      ylab = 'no. of individuals',
      freq=TRUE, cex.main=1, las = 1
     )
 ```
 ## Interested explanatory variables {#sec-interested_variables}
 
-There are a total of 13 predictors of interest that is seemingly related to the time spent on physical activities by an individual in Ontario.  
+There are a total of 13 predictors of interest that are seemingly related to the time spent on physical activities by an individual in Ontario.  
 
 ### Variable 1: Age
-This is a variable of interest because age is seemingly correlated to The age groups of respondents were obtained and they exist in bins that spans ages 18 years to 74 years old. 
+This is a variable of interest because age is seemingly correlated to time spent on physical activities. It is well known that the younger schooling population has more time and physical capacity to exercise than a working adult. In the International Journal of Behavioral Nutrition and Physical Activity, @citationUofExerciseAndAge discovered that younger individuals were exercising more than their older counterparts. 
+
+The age groups of respondents were obtained and they exist in bins that span ages 18 years to 74 years old. 
 
 - 3: 18-19 years old
 - 4: 20-24 years old
@@ -220,7 +222,7 @@ From @fig-barplot-age, we can immediately see that most observations fall within
 #| warning: false
 #| message: false
 #| label: fig-barplot-age
-#| fig-cap: Histogram of time spent on physical activites the past 7 days
+#| fig-cap: Time spent on physical activities the past 7 days
 
 # colnames(data_cleaned_1)
 # 
@@ -254,7 +256,7 @@ data_cleaned_1 |>
         panel.grid.minor.x = element_blank())
 ```
 
-From @tbl-summarised_statistics_age and @fig-boxplot-age, we are able to see that the the median age bin belongs to age group 40-44 years old. We are able to see that there are no outlier values from @fig-boxplot-age, which means that the survey has obtained an acceptable number of respondents across all age bins. 
+From @tbl-summarised_statistics_age and @fig-boxplot-age, we are able to see that the median age bin belongs to the age group 40-44 years old. We are able to see that there are no outlier values from @fig-boxplot-age, which means that the survey has obtained an acceptable number of respondents across all age bins. 
 ```{r age predictor summarised statistics}
 #| echo: false
 #| warning: false
@@ -278,7 +280,7 @@ kable(age_data_summarised_statistics)
 #| warning: false
 #| message: false
 #| label: fig-boxplot-age
-#| fig-cap: Boxplot of respondent ages
+#| fig-cap: Summary statistics of respondent ages
 
 data_cleaned_1 |>
   ggplot(aes(y=age, x='')) +
@@ -300,15 +302,15 @@ data_cleaned_1 |>
 
 ### Variable 2: Sex {#sec-sex_exploration}
 
-Sex is a possible influential predictor for total time spent on physical activity. Historically, men are associated with exercise and involved in more labour intensive roles such as construction which involves heavy lifting. According to @womenExerciseWHO, women are less active than men by 5% since 2000. However, with the advent of female only establishments such as female gyms, and 32% increase in memberships at fitness and health clubs from 2010 to 2019, it would be interesting to see if the sex of an individual still affects the time spent on physical activites among physically active individuals.  
+Sex is a possible influential predictor for total time spent on physical activity. Historically, men are associated with exercise and involved in more labour-intensive roles such as construction which involves heavy lifting. According to @womenExerciseWHO, women have been less active than men by 5% since 2000. However, with the advent of female-only establishments such as female gyms, and a 32% increase in memberships at fitness and health clubs from 2010 to 2019, it would be interesting to see if the sex of an individual still affects the time spent on physical activities among physically active individuals.  
 
-According to @fig-barplot-sex, there is roughly an equal proportion of sexes from our dataset, with slightly more males (6082 respondents) than females (5859 respondents). Since this was a health survey conducted over phone call, there is an equal chance of a respondent to be male or female, which is roughly reflected ing @fig-barplot-sex.
+According to @fig-barplot-sex, there is roughly an equal proportion of sexes from our dataset, with slightly more males (6082 respondents) than females (5859 respondents). Since this was a health survey conducted over a phone call, there is an equal chance of a respondent being male or female, which is roughly reflected in @fig-barplot-sex.
 ```{r sex predictor barplot}
 #| echo: false
 #| warning: false
 #| message: false
 #| label: fig-barplot-sex
-#| fig-cap: Barplot of sex
+#| fig-cap: Frequency of sex variable
 data_cleaned_1 |>
   mutate(sex = factor(sex, levels = c(0,1), labels =c('Female','Male'))) |>
   ggplot()  +
@@ -329,11 +331,11 @@ data_cleaned_1 |>
 
 ### Variable 3: Highest level of education
 
-In 2023, @EducationAndActiveLifestyle has done a study to show that highest educational attainment may be a leading factor for physical activity. Therefore, it would be worth exploring the effects of highest levels of education with the time spent on physical activities among the Ontario residents.
+In 2023, @EducationAndActiveLifestyle did a study to show that the highest educational attainment may be a leading factor for physical activity. Therefore, it would be worth exploring the effects of the highest levels of education on the time spent on physical activities among Ontario residents.
 
-According to @tbl-proportion_highest_educational_attainment, respondents who did not graduate secondary school account for only 5% of the population, and respondents who have at least a bachelor's degree account for 72% of the population. According to @fig-barplot_highest_educational_attainment, there seems to be class imbalance for this variable.
+According to @tbl-proportion_highest_educational_attainment, respondents who did not graduate secondary school account for only 5% of the population, and respondents who have at least a bachelor's degree account for 72% of the population. According to @fig-barplot_highest_educational_attainment, there seems to be a class imbalance for this variable.
 
-However, as seen from post-secondary institution enrollment data from @statisticaPostSecEnrollment, there has been an increase in total number of Canadians enrolled in post secondary education from 2000 to 2020. Accounting for population changes from 2000 [@statCanadaPopulation2000] to 2022 [@statCanadaPopulation2022], there is still a real increase in the number of real enrollments into post secondary education. Therefore, it is very possible that this is representative of the Ontario's population where majority of the population has at least post secondary education.
+However, as seen from post-secondary institution enrollment data from @statisticaPostSecEnrollment, there has been an increase in the total number of Canadians enrolled in post-secondary education from 2000 to 2020. Accounting for population changes from 2000 [@statCanadaPopulation2000] to 2022 [@statCanadaPopulation2022], there is still a real increase in the number of real enrollments in post-secondary education. Therefore, it is very possible that this is representative of Ontario's population where the majority of the population has at least post-secondary education.
 
 ```{r proportion of respondents, group(highest_educational_attainment)}
 #| echo: false
@@ -368,7 +370,7 @@ kable(proportion_highest_educ_table)
 #| warning: false
 #| message: false
 #| label: fig-barplot_highest_educational_attainment
-#| fig-cap: Barplot of highest_educational_attainment
+#| fig-cap: Frequency of highest_educational_attainment variable
 data_cleaned_1 |>
   mutate(highest_educational_attainment = factor(highest_educational_attainment, levels = c(1,2,3), labels =c('less than sec sch grad','sec sch grad', 'university degree and above'))) |>
   ggplot()  +
@@ -386,10 +388,10 @@ data_cleaned_1 |>
 
 ### Variable 4: Health Region
 
-Health region is a categorical variable which tells us the geographical location an individual belongs to defined by Provincial Ministries of Health (as detailed by documentation provided by CHASS). It could be possible that certain health regions have more funding that are projected towards increasing awareness towards having an active lifestyle. Therefore, it is worth exploring the relationship between health region and time spent on physical activities.
+Health region is a categorical variable that tells us the geographical location an individual belongs to defined by Provincial Ministries of Health (as detailed by documentation provided by CHASS). It could be possible that certain health regions have more funding that are projected towards increasing awareness towards having an active lifestyle. Therefore, it is worth exploring the relationship between health region and time spent on physical activities.
 
 
-There are a total of 34 different health regions in the Ontario province. They are encoded using 5 digits. @fig-map_health_region shows us the various health regions in Ontario. The blue regions shows us health regions for which lesser respondents belong to while red regions show us health regions for which more respondents belong to.
+There are a total of 34 different health regions in the Ontario province. They are encoded using 5 digits. @fig-map_health_region shows us the various health regions in Ontario. The blue regions show us health regions to which fewer respondents belong while the red regions show us health regions to which more respondents belong.
 
 Highest occurring health regions
 
@@ -407,7 +409,7 @@ Lowest occurring health regions
 - 35942: Lambton Health Unit
 - 35956: Porcupine Health Unit *(lowest number of observations)
 
-By using a GIS focused library in R called tmap [@citationTmap], we are able to generate the map shown in @fig-map_health_region.
+By using a GIS-focused library in R called tmap [@citationTmap], we are able to generate the map shown in @fig-map_health_region.
 
 ```{r health region map}
 #| echo: false
@@ -435,14 +437,14 @@ source("../scripts/05-health_region_map.R")
 health_region_map
 ```
 
-Overall, @fig-barplot_health_region shows us the actual number of observations belonging to the top five and bottom 5 occurring health regions. We can see that most respondents come from the City of Ontario Health Unit (Health_Region = 35995) and lesser respondents belong to Porcupine Health Unit (Health_Region = 35956).
+Overall, @fig-barplot_health_region shows us the actual number of observations belonging to the top five and bottom 5 occurring health regions. We can see that most respondents come from the City of Ontario Health Unit (Health_Region = 35995) and fewer respondents belong to the Porcupine Health Unit (Health_Region = 35956).
 
 ```{r Health region map}
 #| echo: false
 #| warning: false
 #| message: false
 #| label: fig-barplot_health_region
-#| fig-cap: Barplot of top and bottom five occuring health regions 
+#| fig-cap: Frequency of top and bottom five occuring health regions 
 
 data_cleaned_1 |>
   # mutate(health_region = case_when(
@@ -471,7 +473,7 @@ data_cleaned_1 |>
 
 ### Variable 5: Personal Income
 
-In the dataset, personal income (INCDGPER) is a categorical variable that places an individuals annual income into a range of income values. Below summarises the encoded number and the corresponding meaning of each encoded number. All income values are measured per year.
+In the dataset, personal income (INCDGPER) is a categorical variable that places an individual's annual income into a range of income values. Below summarises the encoded number and the corresponding meaning of each encoded number. All income values are measured per year.
 
 - 1: No income or income loss
 - 2: Less than \$20,000 
@@ -487,7 +489,7 @@ According to @fig-barplot_personal_income, most of our respondents (25% of the s
 #| warning: false
 #| message: false
 #| label: fig-barplot_personal_income
-#| fig-cap: Barplot of personal income 
+#| fig-cap: Frequency of personal income 
 
 max_inc <- data_cleaned_1 |> 
   count(personal_income) |> 
@@ -545,13 +547,13 @@ This variable is a categorical variable with an implied order.
 - 6: four to six times a week
 - 7: every day
 
-From @fig-barplot_frequency_alcohol_consumption, we are able to see that most respondents from this dataset drink about 2-3 times per week (2973 respondents) as seen from the red bar. Also, we are seeing fewer respondents drinking about 4-6 times per week (887 respondents) as seen from the blue bar.
+From @fig-barplot_frequency_alcohol_consumption, we can see that most respondents from this dataset drink about 2-3 times per week (2973 respondents) as seen from the red bar. Also, we are seeing fewer respondents drinking about 4-6 times per week (887 respondents) as seen from the blue bar.
 ```{r Alcohol frequency bar graph}
 #| echo: false
 #| warning: false
 #| message: false
 #| label: fig-barplot_frequency_alcohol_consumption
-#| fig-cap: Barplot of frequency of alcohol consumption
+#| fig-cap: Frequency of alcohol consumption
 max_alc <- data_cleaned_1 |> 
   count(num_alc_drank_12m) |> 
   top_n(1, n) |>
@@ -594,11 +596,11 @@ data_cleaned_1 |>
 
 ### Variable 7: Illicit drug use the past 12 months {#sec-drug_exploration}
 
-This is a binary variable which indicates whether an individual has used drugs in the past 12 months prior to the interview. Drugs include marijuana, hashish, cocaine, amphetamines, speed, methamphetamine, crystal meth, ecstasy, hallucinogens, and sniffing glue, gasoline or other solvents. If they have attempted any of these drugs, this variable would be flagged as '1' and '0' otherwise.
+This is a binary variable that indicates whether an individual has used drugs in the past 12 months prior to the interview. Drugs include marijuana, hashish, cocaine, amphetamines, speed, methamphetamine, crystal meth, ecstasy, hallucinogens, and sniffing glue, gasoline or other solvents. If they have attempted any of these drugs, this variable would be flagged as '1' and '0' otherwise.
 
-It would be interesting to see if drug consumption has an effect on physical activeness. @PhysicalActivityAndSubstanceAbuse exerts that individuals who are more active tend to have lower substance abuse, suggesting a correlation between these two. Having this variable would be interesting to explore the relationship of an individuals drug usage and their time spent on physical activities. 
+It would be interesting to see if drug consumption affects physical activity. @PhysicalActivityAndSubstanceAbuse exerts that individuals who are more active tend to have lower substance abuse, suggesting a correlation between these two. Having this variable would be interesting to explore the relationship between an individual's drug usage and their time spent on physical activities. 
 
-@fig-barplot_illicit_drug_use shows us the number of respondents who have (or haven't) consumed drugs 12 months prior to their interviews. We can see that majority of respondents have not consumed drugs in the given timeframe. However, from @tbl-illicit_drug_use, we can see that there are still a number of respondents who had consumed drugs in the past 12 months, particularly a fifth of the sampling population. According to @SubstanceUseAndAddiction, they estimate that about 21% of canadians, or 6 million people, will meet the criteria for substance use in their lifetime, and this is inclusive of alcohol and that there is a growing opiod crisis in Ontario. Therefore the obtained sample is somewhat representative of usage of drugs among the Ontario population. 
+@fig-barplot_illicit_drug_use shows us the number of respondents who have (or haven't) consumed drugs 12 months before their interviews. We can see that the majority of respondents have not consumed drugs in the given timeframe. However, from @tbl-illicit_drug_use, we can see that there are still several respondents who had consumed drugs in the past 12 months, particularly a fifth of the sampling population. According to @SubstanceUseAndAddiction, they estimate that about 21% of Canadians, or 6 million people, will meet the criteria for substance use in their lifetime, and this is inclusive of alcohol and there is a growing opioid crisis in Ontario. Therefore the obtained sample is somewhat representative of the usage of drugs among the Ontario population. 
 ```{r Illicit drug use summary table}
 #| echo: false
 #| warning: false
@@ -621,7 +623,7 @@ kable(drug_use_proportion_table)
 #| warning: false
 #| message: false
 #| label: fig-barplot_illicit_drug_use
-#| fig-cap: Barplot of illicit drug use the past 12 months
+#| fig-cap: Illicit drug use the past 12 months
 data_cleaned_1 |>
   mutate(illicit_drug_use = factor(illicit_drug_use, levels = c(0,1), labels =c('Non-drug user','Drug user'))) |>
   ggplot()  +
@@ -638,11 +640,11 @@ data_cleaned_1 |>
 
 ### Variable 8: Cigarette consumption
 
-Respondents were asked whether they had smoked more than 100 cigarettes in their lifetimes. This variable is therefore binary, with '1' representing respondents that meet the critera and '0' otherwise. 
+Respondents were asked whether they had smoked more than 100 cigarettes in their lifetimes. This variable is therefore binary, with '1' representing respondents that meet the criteria and '0' otherwise. 
 
-It is well known that excessive smoking has negative health impacts on individuals. A cross sectional study conducted by @SmokingAndPhysicalActiveness found that smokers are less likely to be physically active compared to non-smokers. Hence, it would be interesting to discover if there is an effect of smoking more than 100 cigarettes on the time spent on physical activites. 
+It is well known that excessive smoking has negative health impacts on individuals. A cross-sectional study conducted by @SmokingAndPhysicalActiveness found that smokers are less likely to be physically active compared to non-smokers. Hence, it would be interesting to discover if there is an effect of smoking more than 100 cigarettes on the time spent on physical activities. 
 
-@fig-barplot-cigarettes shows us that within the sample, the visual difference between the number of respondents who smoked more than 100 cigarettes (blue column) and respondents who smoked lesser than 100 cigarettes are not that big. Specifically, 57% of respondents have smoked less than 100 cigarettes while the remaining 43% of respondents smoked more than 100 cigarettes. As the classes in this variable is almost split half,
+@fig-barplot-cigarettes shows us that within the sample, the visual difference between the number of respondents who smoked more than 100 cigarettes (blue column) and respondents who smoked less than 100 cigarettes is not that big. Specifically, 57% of respondents have smoked less than 100 cigarettes while the remaining 43% of respondents smoked more than 100 cigarettes. As the classes in this variable are almost split in half.
 
 ```{r cigarette barplot}
 #| echo: false
@@ -665,13 +667,13 @@ data_cleaned_1 |>
 ```
 
 
-@fig-pyrmaid-cigarettes shows us cigarette consumption by age bins among out sample population. As respondent age increases from the first bin (18 to 19 year old) to the fourth bin (30 to 34 year old), we can see the number of respondents who have smoked more than 100 cigarettes in their lifetime increased from less than 125 respondents to more than 500 respondents (about 3 times more respondents between the two age groups).
+@fig-pyrmaid-cigarettes shows us cigarette consumption by age bins among our sample population. As respondent age increases from the first bin (18 to 19 years old) to the fourth bin (30 to 34 years old), we can see the number of respondents who have smoked more than 100 cigarettes in their lifetime increased from less than 125 respondents to more than 500 respondents (about 3 times more respondents between the two age groups).
 ```{r cigarette consumption pyramid figure}
 #| echo: false
 #| warning: false
 #| message: false
 #| label: fig-pyrmaid-cigarettes
-#| fig-cap: Pyramid of cigarettes consumption in respondent's lifetime by age groups
+#| fig-cap: Cigarette consumption in respondent's lifetime by age groups
 
 data_cleaned_1 |>
       group_by(age) |>
@@ -726,7 +728,7 @@ modelling algorithm to determine it. A full model where our response $time\_spen
 
 ## Model set-up
 
-Let $k$ be the individual from CCHS dataset. Define $y_k$ as the time spent on physical activities for individual $k$. Then $Age_k$, $Sex_k$, $Educ_k$ and $Alc_k$ represents individual i's age, sex, highest educational attainment, and frequency of alcohol consumption the past 12 months respectively. Also, $Drug_k$ and $Cigar_k$ would be indicator explanatory variables derived from the binary variables in our dataset representing if individual k had consumed drugs in the past 12 months and if he/she has smoked 100 cigars in their lifetime respectively. Finally, $HealthRegion_k=35953$ and $HealthRegion_k=35970$ are also indicator explanatory variables derived from the categorical variable health_region in our dataset, which represents if individual k belongs to Health Region 35953 (Peel Regional Health Unit) and if he/she belongs to Health Region 35970 (York Regional Health Unit). Note that the reference with respect to Health Region would be individuals that are not in both health region 35953 and 35970.
+Let $k$ be the individual from the CCHS dataset. Define $y_k$ as the time spent on physical activities for individual $k$. Then $Age_k$, $Sex_k$, $Educ_k$, and $Alc_k$ represent individual i's age, sex, highest educational attainment, and frequency of alcohol consumption in the past 12 months respectively. Also, $Drug_k$ and $Cigar_k$ would be indicator explanatory variables derived from the binary variables in our dataset representing if individual k had consumed drugs in the past 12 months and if he/she has smoked 100 cigars in their lifetime respectively. Finally, $HealthRegion_k=35953$ and $HealthRegion_k=35970$ are also indicator explanatory variables derived from the categorical variable health_region in our dataset, which represents if individual k belongs to Health Region 35953 (Peel Regional Health Unit) and if he/she belongs to Health Region 35970 (York Regional Health Unit). Note that the reference concerning Health Region would be individuals that are not in both Health Region 35953 and 35970.
 
 Therefore the final model would be... 
 
@@ -749,7 +751,7 @@ We run the model in R [@citeR] using the `stats` package which is a base library
 
 ### Model justification {#sec-model_justification}
 
-Initially, we fitted a full model containing every variable of interest. Since health region is a categorical variable with no implied order, To handle health region, we will be creating dummy variables for each health region, specifically $I*(HealthRegion_k=i)$ for $i \in {health\_region}$, and the reference chosen for health region would be the health_region = 35926 (The District of Algoma HU). We define $Income_k$ to be the the personal income of individual k in our dataset. 
+Initially, we fitted a full model containing every variable of interest. Since health region is a categorical variable with no implied order, To handle health region, we will be creating dummy variables for each health region, specifically $I*(HealthRegion_k=i)$ for $i \in {health\_region}$, and the reference chosen for health region would be the health_region = 35926 (The District of Algoma HU). We define $Income_k$ to be the personal income of individual k in our dataset. 
 
 Then, for $8 \leq c \leq 40$ and $i \in {health\_region}$, our original full model was defined as... 
 
@@ -758,9 +760,9 @@ Then, for $8 \leq c \leq 40$ and $i \in {health\_region}$, our original full mod
      & \quad\: \beta_7I*(Cigar_k) + \beta_cI*(HealthRegion=i) + \epsilon_k
 \end{align*}
 
-We then conducted model reduction using backward feature elimination using Bayesian Information Criterion (BIC) as our scoring metric to obtain the least number of predictors that minimises the residual errors from the reduced model. This model reduction was performed using `stats` package from the @citeR as well. The resulting BIC value was obtained from the `lme4` package [@citationBIC]. 
+We then conducted model reduction using backward feature elimination using the Bayesian Information Criterion (BIC) as our scoring metric to obtain the least number of predictors that minimizes the residual errors from the reduced model. This model reduction was performed using `stats` package from the @citeR as well. The resulting BIC value was obtained from the `lme4` package [@citationBIC]. 
 
-@tbl-BIC_values shows us the BIC values for both the full model and the reduced model. After removing certain explanatory variables, the BIC score has decreased, indicating that the reduced model is has stronger explanatory power while having a less complex model. Therefore, the reduced model is chosen from the original full model.
+@tbl-BIC_values shows us the BIC values for both the full model and the reduced model. After removing certain explanatory variables, the BIC score has decreased, indicating that the reduced model has stronger explanatory power while having a less complex model. Therefore, the reduced model is chosen from the original full model.
 
 ```{r}
 #| echo: false
@@ -795,7 +797,7 @@ The final model with our estimated coefficients are as follows
      & \quad\: 0.12I*(Cigar_k) + \beta_cI*(HealthRegion=i) + \epsilon_k
 \end{align*}
 
-Overall, the individual t-test for our predictors were found to be below our set threshold of 95% alpha. The confidence interval for each predictor is listed in @tbl-confidence_interval_lmmodel shown below.
+Overall, the individual t-test for our predictors was found to be below our set threshold of 95% alpha. The confidence interval for each predictor is listed in @tbl-confidence_interval_lmmodel shown below.
 
 ```{r confidence interval for linear model}
 #| echo: false
@@ -840,15 +842,15 @@ modelsummary::modelsummary(
 
 # Discussion {#sec-discussion}
 
-## Males are more likely to engage in physical activities{#sec-men_physical_activites}
+## Males are more likely to engage in physical activities{#sec-men_physical_activities}
 
-According to @fig-physical_activity_by_sex, we can observe that amongst individuals that are active, men spend (on average) more time on physical activity than women. In particular, according to our sample men spend on average 639 minutes a week on physical activites while women spend on average 437 minutes a week on physical activities. 
+According to @fig-physical_activity_by_sex, we can observe that amongst active individuals, men spend (on average) more time on physical activity than women. In particular, according to our sample men spend on average 639 minutes a week on physical activities while women spend on average 437 minutes a week on physical activities. 
 
 ```{r bar plot of results - sex}
 #| echo: false
 #| eval: true
 #| label: fig-physical_activity_by_sex
-#| fig-cap: "Bar plot of average time spent on physical activity by sex"
+#| fig-cap: Average time spent on physical activity by sex
 #| warning: false
 
 options(scipen=999)
@@ -874,22 +876,22 @@ exercise_sex_data|>
         panel.grid.minor.x = element_blank())
 ```
 
-For the explanatory variable `sex`, the corresponding coefficient from the fitted linear model is 0.232. This means that if an individual is a male, this increases the time spent on physical activities by 26%. While we were expecting increase in the overall engagement in physical activity among women as explained in @sec-sex_exploration, men are still more likely to engage in physical activities than women. In 2018, Global News Canada reported that 31% of women and 25% of men have insufficient physical activity [@citationMenVsWomenExercise]. Therefore, our linear regression model discovery was not surprising.
+For the explanatory variable `sex`, the corresponding coefficient from the fitted linear model is 0.232. This means that if an individual is a male, this increases the time spent on physical activities by 26%. While we were expecting an increase in the overall engagement in physical activity among women as explained in @sec-sex_exploration, men are still more likely to engage in physical activities than women. In 2018, Global News Canada reported that 31% of women and 25% of men have insufficient physical activity [@citationMenVsWomenExercise]. Therefore, our linear regression model discovery was not surprising.
 
-In fact, in a study published in the Journal of American College of Cardiology, they discovered that women who were physically active would experience greater health benefits than men who were also physically active [@citationWomenSurviveBetterExercise]. Therefore, this means that more can be done to address the gender gap in the engagement of physical activities. 
+In fact, in a study published in the Journal of American College of Cardiology, they discovered that physically active women would experience greater health benefits than men who were also physically active [@citationWomenSurviveBetterExercise]. Therefore, this means that more can be done to address the gender gap in the engagement of physical activities. 
 
 
 ## Ontario residents who have smoked before might be more likely to engage in physical activities.
 
-From elementary school, Ontario students are exposed to health education where schools would educate about the harms of smoking. It is well known that smoking has negative effect's on an individual's health. Therefore it is unexpected that the linear regression model showed a positive coefficient for the indicator variable for 'having smoked 100 cigarettes' in an individual's lifetime.
+From elementary school, Ontario students are exposed to health education where schools would educate about the harms of smoking. It is well known that smoking has negative effects on an individual's health. Therefore it is unexpected that the linear regression model showed a positive coefficient for the indicator variable for 'having smoked 100 cigarettes' in an individual's lifetime.
 
-The linear model is telling us that if an individual has smoked 100 cigarettes in their lifetime, they are 13% more likely to spend more time being physically active than an individual who has not smoked more than 100 cigarettes in the same time frame. While it may seem contradicting to what we believe, there may be merit to this value. From @fig-physical_activity_by_smoking_status, we can see that individuals who had smoked 100 cigarettes in their lifetime spent more time on physical activity than individuals who have not smoked 100 cigarettes. In particular, our data shows that on average, individuals who smoked 100 cigarettes spend 618 minutes on physical activities in a week while those who don't spend only 418 minute on physical activities.
+The linear model tells us that if an individual has smoked 100 cigarettes in their lifetime, they are 13% more likely to spend more time being physically active than an individual who has not smoked more than 100 cigarettes in the same time frame. While it may seem contradicting to what we believe, there may be merit to this value. From @fig-physical_activity_by_smoking_status, we can see that individuals who had smoked 100 cigarettes in their lifetime spent more time on physical activity than individuals who have not smoked 100 cigarettes. In particular, our data shows that on average, individuals who smoked 100 cigarettes spend 618 minutes on physical activities in a week while those who didn't spend only 418 minutes on physical activities.
 
 ```{r bar plot of results - smoking status}
 #| echo: false
 #| eval: true
 #| label: fig-physical_activity_by_smoking_status
-#| fig-cap: "Bar plot of average time spent on physical activity by smoking status"
+#| fig-cap: Average time spent on physical activity by smoking status
 #| warning: false
 
 cigarette_sex_data <- data_cleaned_1 |>
@@ -916,17 +918,17 @@ cigarette_sex_data |>
         panel.grid.minor.x = element_blank()) 
 ```
 
-A team from the school of Public Health Sciences at University of Waterloo had explored patterns and trends for tobbaco use in canada. What they found was that 70% of Canadians who had smoked before have quit as of 2020 @citationSmokingPatternsWaterlooUniversity. While smoking may have been affected an individual's physical capabilities, it could have also increased awareness regarding the importance of their health. Since most Canadians who had a history of smoking had quit smoking, it is very possible that they have greater health conscious. Coupled with increased government support for programs with the sole purpose of increasing physical activeness in Ontario [@citationGovernmentSupportExercise], it is no longer surprising why individuals who smoked 100 cigarettes in their lifetime are on average 13% more likely to engage in physical activities.
+A team from the School of Public Health Sciences at the University of Waterloo explored patterns and trends for tobacco use in Canada. What they found was that 70% of Canadians who had smoked before have quit as of 2020 @citationSmokingPatternsWaterlooUniversity. While smoking may have affected an individual's physical capabilities, it could have also increased awareness regarding the importance of their health. Since most Canadians who have a history of smoking have quit smoking, it is very possible that they have greater health consciousness. Coupled with increased government support for programs with the sole purpose of increasing physical activeness in Ontario [@citationGovernmentSupportExercise], it is no longer surprising why individuals who smoked 100 cigarettes in their lifetime are on average 13% more likely to engage in physical activities.
 
 ## Possible increase in stimulant use
 
-According to the model, the coefficient for illicit drug use is a positive value. This means that if an individual from Ontario has consumed drugs listed in @sec-drug_exploration, they would spend on average 17% more time on physical activities. This is also another surprising finding since we have also discussed in @sec-drug_exploration that there is a negative correlation between drug use and physical activeness, but our findings for our Ontario population suggests a positive correlation. From @fig-physical_activity_by_illicit_drug_use, we can see that individuals who consumed drugs listed in @sec-drug_exploration in their lifetime spent more time on physical activity than individuals who have not consumed drugs. In particular, our data shows that on average, individuals are drug abusers spend 670 minutes on physical activities in a week while those who don't spend only 503 minute on physical activities.
+According to the model, the coefficient for illicit drug use is a positive value. This means that if an individual from Ontario has consumed drugs listed in @sec-drug_exploration, they would spend on average 17% more time on physical activities. This is also another surprising finding since we have also discussed in @sec-drug_exploration that there is a negative correlation between drug use and physical activeness, but our findings for our Ontario population suggest a positive correlation. From @fig-physical_activity_by_illicit_drug_use, we can see that individuals who consumed drugs listed in @sec-drug_exploration in their lifetime spent more time on physical activity than individuals who have not consumed drugs. In particular, our data shows that on average, individuals who are drug abusers spend 670 minutes on physical activities in a week while those who don't spend only 503 minutes on physical activities.
 
 ```{r bar plot of results - illicit drug use}
 #| echo: false
 #| eval: true
 #| label: fig-physical_activity_by_illicit_drug_use
-#| fig-cap: "Bar plot of average time spent on physical activity by illicit drug use"
+#| fig-cap: Average time spent on physical activity by illicit drug use"
 #| warning: false
 
 drug_sex_data <- data_cleaned_1 |>
@@ -953,13 +955,18 @@ drug_sex_data |>
         panel.grid.minor.x = element_blank()) 
 ```
 
-Of the listed drugs, amphetamine and methamphetamine were identified as well. According to @citationDrugsAndActiveLifestyle, they mentioned that the use of meth (short term for methamphetamine) leads to increased concentrations of dopamine, which is a mood enhancer. This is coupled with the increase of body movement. Likewise, in a study conducted by the Indiana University [@citationAmphetamineandExercise], they found that the use of Amphetamine masks fatigue, allowing for individuals to exercise longer. This shows that it is possible that the inclusion of these drugs could have explained the surprising increase in time spent on physical activities despite the expectation that an individual who abuses drugs would have lower exercise.  
+Of the listed drugs, amphetamine and methamphetamine were identified as well. According to @citationDrugsAndActiveLifestyle, they mentioned that the use of meth (short for methamphetamine) leads to increased concentrations of dopamine, which is a mood enhancer. This is coupled with the increase in body movement. Likewise, in a study conducted by Indiana University [@citationAmphetamineandExercise], they found that the use of Amphetamine masks fatigue, allowing individuals to exercise longer. This shows that it is possible that the inclusion of these drugs could have explained the surprising increase in time spent on physical activities despite the expectation that an individual who abuses drugs would have lower exercise.  
 
-The inclusion of these drugs in the survey could explain the positive coefficient seen from our model. However, this is just a hypothesis and an experiment would need to be conducted to explore if this finding is true, where we obtain a sample of drug users who consumed amphetamine and methamphetamine and drug users who did not consume the two drugs.
+The inclusion of these drugs in the survey results in aggregation bias as many drugs which may have varying effects on physical activity were clumped into this single inclusion variable. This bias could explain the positive coefficient seen from our model. However, this is just a hypothesis and an experiment would need to be conducted to explore if this finding is true, where we obtain a sample of drug users who consumed amphetamine and methamphetamine and drug users who did not consume the two drugs.
 
 ## Weaknesses 
 
 Self-reported bias is a common limitation in health data collection, particularly when examining behaviors like physical activity, alcohol consumption, and smoking. Participants may overestimate or underestimate their activities due to memory recall issues, social desirability bias, or personal perceptions of what constitutes "healthy" behavior. For example, individuals might inflate their reported exercise levels or downplay unhealthy habits like smoking. Such inaccuracies can introduce systematic error, leading to biased estimates of associations and potentially undermining the validity of the study's conclusions. Mitigating this requires complementary objective measures, such as wearable activity trackers or biomarkers.
+
+Furthermore, the intent of aggregating data to protect an individual's privacy in census data collection caused certain variables to be too over-generalized, and have limited categorizations for meaningful exploration. For instance, the highest educational attainment variable only has 3 bins, not having attained a secondary certification, having attained secondary certification, and having post-secondary certification. The first category includes both individuals that went to school and individuals that never went to school. Also, the last category includes individuals obtaining post-secondary diplomas, bachelor's, master's, and PhD degrees. Each category that was otherwise aggregated to fit the three categories during dataset collection might have had a different effect on the response variable, resulting in aggregation bias and potentially losing important information.
+
+Also, age has inconsistent bins, particularly for 18 to 19 year olds and every other bin, therefore this would result in fewer individuals that belong to the 18 to 19 year old bin. This would lead to biased medians when conducting summary statistics and undersampling due to a smaller inclusion criterion for this specific bin, resulting in decreased precision when conducting statistical tests like chi-square test.
+
 \newpage
 
 \appendix
@@ -969,9 +976,9 @@ Self-reported bias is a common limitation in health data collection, particularl
 # Diagnostic Checks {#sec-diagnostic_checks}
 ## Motivation to transform response variable for linear regression model {#sec-transform-response}
 
-Our response variable was log transformed to fulfill diagnostic checks for linear regression model. Observe the change in qq plot of the fitted linear regression model before our response ($time\_spent\_on\_vigorous\_exercise\_7d$) was log-transformed and after it was log transformed. From the left plot of @fig-diagnostic_plot_qq, we can see that values of standardised residuals are a lot larger than expected at higher quantile values. This suggests that the distribution of the residuals is severely right skewed. This contradicts the assumption of normality of residuals, which would make our linear regression model unreliable. 
+Our response variable was log-transformed to fulfill diagnostic checks for the linear regression model. Observe the change in the qq plot of the fitted linear regression model before our response ($time\_spent\_on\_vigorous\_exercise\_7d$) was log-transformed and after it was log-transformed. From the left plot of @fig-diagnostic_plot_qq, we can see that values of standardized residuals are a lot larger than expected at higher quantile values. This suggests that the distribution of the residuals is severely right-skewed. This contradicts the assumption of normality of residuals, which would make our linear regression model unreliable. 
 
-From the right plot of @fig-diagnostic_plot_qq, after we transform our response using the natural logarithm function ($ln$), we can see that most of the residuals lie on the y=x line in the qqplot, suggesting that the sampling distribution is approximately normal. 
+From the right plot of @fig-diagnostic_plot_qq, after we transform our response using the natural logarithm function ($ln$), we can see that most of the residuals lie on the y=x line in the qq plot, suggesting that the sampling distribution is approximately normal. 
 
 ```{r qq plot}
 #| echo: false
@@ -987,12 +994,12 @@ par(mfrow = c(1,2))
 plot(not_transformed_model,2, col=adjustcolor('black', alpha=0.2), sub='')
 title(main='not transformed')
 p2_1 <- plot(original_model,2, col=adjustcolor('black', alpha=0.2), sub='')
-title(main='log transformed')
+title(main='log-transformed')
 ```
 
-Now, we observe the change in the scale location plot of the fitted linear regression model before our response ($time\_spent\_on\_vigorous\_exercise\_7d$) was log-transformed and after it was log transformed. From the left plot of @fig-diagnostic_plot_scale_location, we can see a weak but visible trend that as the fitted values increase, so does the square root of the standardized residuals. This suggests that the residuals are not randomly distributed, which goes against the assumption of linear regression that residuals are independent from each other. Furthermore, the mean red line is not horizontally flat. This is suggesting a positive trend. This tells us that the variance of the residuals is increasing, therefore implying that our residuals do not satisfy homoscedasticity assumption of linear regression, which would lead to an unreliable linear regression model.
+Now, we observe the change in the scale location plot of the fitted linear regression model before our response ($time\_spent\_on\_vigorous\_exercise\_7d$) was log-transformed and after it was log-transformed. From the left plot of @fig-diagnostic_plot_scale_location, we can see a weak but visible trend that as the fitted values increase, so does the square root of the standardized residuals. This suggests that the residuals are not randomly distributed, which goes against the assumption of linear regression that residuals are independent of each other. Furthermore, the mean red line is not horizontally flat. This suggests a positive trend. This tells us that the variance of the residuals is increasing, therefore implying that our residuals do not satisfy the homoscedasticity assumption of linear regression, which would lead to an unreliable linear regression model.
 
-From the right plot of @fig-diagnostic_plot_scale_location, we can see that the standardised residuals are randomly scattered across the plot across all fitted values. This suggests that residuals are independant from each other. Furthermore, the mean red line is (almost) horizontally flat, for which suggests that the variance of residuals across all fitted values are constant. Therefore, homoscedasticity assumption for linear regression is also satisfied, allowing us to interpret the coefficient estimates of our fitted linear model with greater reliability.
+From the right plot of @fig-diagnostic_plot_scale_location, we can see that the standardized residuals are randomly scattered across the plot across all fitted values. This suggests that residuals are independent from each other. Furthermore, the mean red line is (almost) horizontally flat, which suggests that the variance of residuals across all fitted values is constant. Therefore, the homoscedasticity assumption for linear regression is also satisfied, allowing us to interpret the coefficient estimates of our fitted linear model with greater reliability.
 
 ```{r scale location plot}
 #| echo: false
@@ -1005,16 +1012,16 @@ par(mfrow = c(1,2))
 plot(not_transformed_model,3, sub='')
 title(main='not transformed')
 plot(original_model,3, sub='')
-title(main='log transformed')
+title(main='log-transformed')
 ```
 
-By performing log transformation of my response, we have satisfied the linear regression assumptions, allowing us to interpret from a reliable linear regression model, therefore explaining the need to transform our response variable in @sec-Model. This would also allow us to perform model reduction outlined in @sec-model_justification
+By performing log transformation of my response, we have satisfied the linear regression assumptions, allowing us to interpret from a reliable linear regression model, therefore explaining the need to transform our response variable in @sec-Model. This would also allow us to perform model reduction outlined in @sec-model_justification.
 
 ## Diagnostic check for final linear model after BIC
 
-The final linear model was obtained after performing backward feature elimination using BIC score as the criterion. In this section, we will be showing that the final model satisfies linear regression assumptions.
+The final linear model was obtained after performing backward feature elimination using the BIC score as the criterion. This section shows that the final model satisfies linear regression assumptions.
 
-@fig-diagnostic_plot_qq_final_model shows us that the values of standardised residuals are approximately equal to the theoretical quantiles, which suggests that the residuals are normally distributed. 
+@fig-diagnostic_plot_qq_final_model shows us that the values of standardized residuals are approximately equal to the theoretical quantiles, which suggests that the residuals are normally distributed. 
 ```{r}
 #| echo: false
 #| eval: true
@@ -1023,7 +1030,7 @@ The final linear model was obtained after performing backward feature eliminatio
 #| warning: false
 plot(final_model,2, sub='')
 ```
-From @fig-diagnostic_plot_scale_location_final_model, we can see that the standardised residuals are randomly scattered across the scale location plot, which suggests that residuals are independant from each other. Furthermore the mean red line is (almost) horizontal which suggests that variance of residuals are constant across all fitted values. This means that the residuals obtained from the final model satisfies homoscedasticity assumption in linear regression
+From @fig-diagnostic_plot_scale_location_final_model, we can see that the standardised residuals are randomly scattered across the scale location plot, which suggests that residuals are independant from each other. Furthermore, the mean red line is (almost) horizontal which suggests that the variance of residuals is constant across all fitted values. This means that the residuals obtained from the final model satisfy the homoscedasticity assumption in linear regression.
 ```{r}
 #| echo: false
 #| eval: true
@@ -1033,7 +1040,7 @@ From @fig-diagnostic_plot_scale_location_final_model, we can see that the standa
 plot(final_model,3, sub='')
 ```
 
-Overall, since the residual assumptions in linear regression are satisfied, we are able to use the coefficient estimates obtained from our final fitted linear model to gain insights into relationship between our predictors and the response as discussed in @sec-discussion.
+Overall, since the residual assumptions in linear regression are satisfied, we are able to use the coefficient estimates obtained from our final fitted linear model to gain insights into the relationship between our predictors and the response as discussed in @sec-discussion.
 
 # Survey: Canadian Community Health Survey (CCHS) Annual component {#sec-survey_methodology}
 
@@ -1041,28 +1048,28 @@ Overall, since the residual assumptions in linear regression are satisfied, we a
 
 ## CCHS Background
 
-The purpose of CCHS is to provide cross sectional estimates of factors related to different health determinants in Canada. The use case for the Canadian health dataset is non-exhaustive and many have used it for the betterment of Canada. In the department of sociology and social work, University of Toronto, researchers have used the weight and weight perception data from the 2017-2018 CCHS to predict adolescents mental health, and they were able to find out that normal weighted girls are not immune from poor mental health arising from poor weight perceptions, hence urging specialists in the mental health field to increase support for these girls that have not been receiving enough avenues [@citationUofTCCHS]. The Canadian Partnership Against Cancer also uses CCHS data to access the severity of the cervical cancer among Canadians, streamlining their cancer screening process as a result and urging the country to focus resources to address inequalities in access to cervical cancer prevention and treatment options between indigenous communities and poor regions [@citationCanadianPartnership2; @citationCanadianPartnership1]. The one thing that ties many of the health-related studies arising from the use of CCHS studies is to address underrepresented communities in Canada.
+The purpose of CCHS is to provide cross-sectional estimates of factors related to different health determinants in Canada. The use case for the Canadian health dataset is non-exhaustive and many have used it for the betterment of Canada. In the Department of Sociology and Social Work, University of Toronto, researchers have used the weight and weight perception data from the 2017-2018 CCHS to predict adolescents' mental health, and they were able to find out that normal weighted girls are not immune from poor mental health arising from poor weight perceptions, hence urging specialists in the mental health field to increase support for these girls that have not been receiving enough avenues [@citationUofTCCHS]. The Canadian Partnership Against Cancer also uses CCHS data to assess the severity of cervical cancer among Canadians, streamlining their cancer screening process as a result and urging the country to focus resources on addressing inequalities in access to cervical cancer prevention and treatment options between Indigenous communities and poor regions [@citationCanadianPartnership2; @citationCanadianPartnership1]. The one thing that ties many of the health-related studies arising from the use of CCHS studies is to address underrepresented communities in Canada.
 
-With the purpose of unifying data across health sources, the Statistics of Canada had began conducting surveys yearly since 2007. From 2015, there was a redesign to their survey methodology that is used for the dataset that was used in this paper.
+With the purpose of unifying data across health sources, the Statistics of Canada has begun conducting surveys yearly since 2007. Since 2015, there has been a redesign to the survey methodology that is used for the dataset that was used in this paper.
 
 ## CCHS Target Population
 
 Their target population covers individuals aged 12 and above living in all ten provinces of Canada. The target population excludes the following...
 
-- individuals living on reserves, more commonly known as indigenous populations with their own governance within Canada ()
-- full time servicemen in the Canadian Armed Forces
+- individuals living on reserves, more commonly known as Indigenous populations with their own governance within Canada
+- full-time servicemen in the Canadian Armed Forces
 - youths aged 12 to 17 residing in foster homes
-- individuals residing in jail, nursing homes, mental health institutions and shelters
-- individuals in quebec health region of Nunavik and Terres-Cries-de-la-Baie-James
+- individuals residing in jail, nursing homes, mental health institutions, and shelters
+- individuals in the Quebec health region of Nunavik and Terres-Cries-de-la-Baie-James
 
-According to CCHS, they account for lesser than 3% of the population
+According to CCHS, they account for less than 3% of the population.
 
 ## CCHS Sampling Frame
 
 The sampling frame for the Canadian Community Health Survey (CCHS) consists of two distinct components based on the target population. For the adult population (18 years and older), the sampling frame is derived from an area frame used by the Canadian Labour Force Survey (LFS). This area frame includes all primary sampling units (PSUs), which are geographic clusters of dwellings within health regions across Canada. For the youth population (12 to 17 years old), the sampling frame is based on a list derived from the Canadian Child Benefit (CCB) files, which includes a list of all program beneficiaries with their names, addresses, and phone numbers.
 
 ## CCHS Sample
-The sample for the CCHS is drawn from the respective sampling frames for adults and youth. Approximately 130,000 individuals are selected for the survey, with around 120,000 respondents allocated to the adult population and 10,000 to the youth population. The sample is stratified by health region, ensuring that each health region has a minimum of 500 respondents. The sample for adults is selected from the area frame using a multi-stage sampling process, while the youth sample is directly selected from the CCB list. The allocation for provinces and territories is based on population size, with a focus on achieving representativeness within each health region. 
+The sample for the CCHS is drawn from the respective sampling frames for adults and youth. Approximately 130,000 individuals were selected for the survey, with around 120,000 respondents allocated to the adult population and 10,000 to the youth population. The sample is stratified by health region, ensuring that each health region has a minimum of 500 respondents. The sample for adults is selected from the area frame using a multi-stage sampling process, while the youth sample is directly selected from the CCB list. The allocation for provinces and territories is based on population size, with a focus on achieving representativeness within each health region. 
 
 ## CCHS Data Collection
 Sample Recruitment for the 2018 Canadian Community Health Survey (CCHS)
@@ -1097,7 +1104,7 @@ Throughout the recruitment process, several quality control measures were in pla
 
 ## CCHS Nonresponse and Nonresponse handling
 
-The Canadian Community Health Survey (CCHS) employs a systematic approach to address nonresponse at both the household and person levels. This ensures that the survey results remain representative of the general population, even when certain individuals or households do not respond. The nonresponse handling methodology is as follows:
+The Canadian Community Health Survey (CCHS) employs a systematic approach to address nonresponse at both the household and personal levels. This ensures that the survey results remain representative of the general population, even when certain individuals or households do not respond. The nonresponse handling methodology is as follows:
 
 \noindent
 1. Household Nonresponse \newline
@@ -1109,7 +1116,7 @@ A logistic regression model is used to predict the likelihood of a household res
 2. Person-Level Nonresponse \newline
 
 The interviewer first collects a complete roster of household members.
-A selected individual from the roster is then interviewed. In cases where the selected individual cannot be contacted or refuses to participate, person-level nonresponse occurs. Similar to household nonresponse, an adjustment is applied to the weights of responding individuals to account for those who did not respond. This ensures that the survey remains representative of the entire population. A logistic regression model is applied to estimate the likelihood that a selected individual will respond to the survey. This model uses information gathered during the first part of the interview (e.g., age, sex, etc.) and the location of the household. The selected individuals are then grouped into response homogeneity groups (RHGs) based on their calculated response probabilities. Within each RHG, an adjustment factor is calculated to correct for person-level.
+A selected individual from the roster is then interviewed. In cases where the selected individual cannot be contacted or refuses to participate, person-level nonresponse occurs. Similar to household nonresponse, an adjustment is applied to the weights of responding individuals to account for those who did not respond. This ensures that the survey remains representative of the entire population. A logistic regression model is applied to estimate the likelihood that a selected individual will respond to the survey. This model uses information gathered during the first part of the interview (e.g., age, sex, etc.) and the location of the household. The selected individuals are then grouped into response homogeneity groups (RHGs) based on their calculated response probabilities. Within each RHG, an adjustment factor is calculated to correct for the personal level.
 
 
 By including factors such as geographic location and household characteristics in the nonresponse adjustment models, CCHS enhances the likelihood that the adjusted sample is representative of diverse populations across different regions and demographic groups. Also, the distinct handling of household nonresponse (via weight adjustment A6) and person nonresponse (via weight adjustment A9) ensures that both levels of nonresponse are addressed separately, which helps maintain the accuracy of estimates at both the household and individual levels.
